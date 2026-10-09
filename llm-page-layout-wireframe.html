@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LLM page layout wireframe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E8EBEE; --paper:#FFFFFF; --ink:#1B2127; --muted:#5B6672; --line:#C6CCD3;
+  --fill:#F4F5F7; --ph:#D6DBE0; --ph2:#B7BEC6;
+  --ga4:#B45309; --ga4-bg:#FBEBD3;
+  --gsc:#1D4ED8; --gsc-bg:#DEE8FD;
+  --ahr:#6D28D9; --ahr-bg:#EBE1FA;
+  --ctrl:#455260; --ctrl-bg:#E3E7EB;
+  --focus:#D61F26;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#13171B; --paper:#1C2227; --ink:#E7EAED; --muted:#9AA5AF; --line:#38414A;
+    --fill:#232A30; --ph:#303941; --ph2:#47525D;
+    --ga4:#F4B35E; --ga4-bg:#3A2A12;
+    --gsc:#8FB0FF; --gsc-bg:#1A2540;
+    --ahr:#C3A6FF; --ahr-bg:#2A1E40;
+    --ctrl:#AAB4BE; --ctrl-bg:#2A3239;
+    --focus:#FF7A80;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#13171B; --paper:#1C2227; --ink:#E7EAED; --muted:#9AA5AF; --line:#38414A;
+  --fill:#232A30; --ph:#303941; --ph2:#47525D;
+  --ga4:#F4B35E; --ga4-bg:#3A2A12;
+  --gsc:#8FB0FF; --gsc-bg:#1A2540;
+  --ahr:#C3A6FF; --ahr-bg:#2A1E40;
+  --ctrl:#AAB4BE; --ctrl-bg:#2A3239;
+  --focus:#FF7A80;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Schibsted Grotesk',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;line-height:1.45;-webkit-text-size-adjust:100%}
+.wrap{max-width:1360px;margin:0 auto;padding:22px 18px 40px}
+h1{font-size:24px;line-height:1.2;margin:0 0 6px;font-weight:700}
+h2{font-size:15px;margin:0 0 4px;font-weight:650}
+h3{font-size:13px;margin:0;font-weight:650}
+p{margin:0}
+.sub{color:var(--muted);font-size:14px;max-width:84ch}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+.chip{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.chip.ga4{color:var(--ga4);background:var(--ga4-bg)}
+.chip.gsc{color:var(--gsc);background:var(--gsc-bg)}
+.chip.ahr{color:var(--ahr);background:var(--ahr-bg)}
+.chip.ctrl,.chip.opt{color:var(--ctrl);background:var(--ctrl-bg)}
+.st{display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:3px;white-space:nowrap}
+.st.new{background:var(--ink);color:var(--paper)}
+.st.rev{border:1px solid var(--ink);color:var(--ink)}
+
+.fbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:16px 0 14px;font-size:13px;color:var(--muted)}
+.fbar button{appearance:none;font:inherit;font-size:13px;font-weight:600;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:5px 14px;cursor:pointer}
+.fbar button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+.stage{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:start}
+@media (max-width:1080px){.stage{grid-template-columns:minmax(0,1fr)}.spec{position:static!important;max-height:none!important}}
+
+.canvaswrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--paper)}
+.canvas{min-width:780px;padding:20px 18px 18px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px;background:var(--paper)}
+.canvas[data-filter="new"] .blk:not([data-st="new"]){opacity:.25}
+.canvas[data-filter="rev"] .blk:not([data-st="rev"]){opacity:.25}
+
+.sec{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--ink);color:var(--paper);border-radius:99px;padding:7px 16px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-top:8px}
+.sec .chip{text-transform:none;letter-spacing:0}
+
+.blk{position:relative;min-width:0;border:1px solid var(--line);border-left:4px solid var(--accent,var(--line));border-radius:4px;padding:10px 12px 12px;background:var(--fill);cursor:pointer}
+.blk[data-q="ga4"]{--accent:var(--ga4)}
+.blk[data-q="gsc"]{--accent:var(--gsc)}
+.blk[data-q="ahr"]{--accent:var(--ahr)}
+.blk[data-q="ctrl"]{--accent:var(--ctrl)}
+.blk.opt{border-style:dashed;border-left-style:solid}
+.blk.active{outline:2px solid var(--focus);outline-offset:2px}
+.badge{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--paper);font-size:11px;font-weight:700;flex:none}
+.blk>.badge{position:absolute;top:-10px;left:-13px}
+.bh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.tags{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+
+.hdr{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:54px;height:34px;border-radius:4px;background:var(--ph2)}
+.ttl strong{display:block;font-size:16px}
+.ttl small{display:block;color:var(--muted);font-size:12px}
+.ctrls{display:flex;gap:8px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:5px 12px;font-size:12px}
+.pill.new{border-style:dashed;border-color:var(--ink)}
+
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:8px}
+.kpi{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;gap:1px}
+.kl{font-size:11px;color:var(--muted)}
+.kpi strong{font-size:21px;line-height:1.15;font-weight:700}
+.kd{font-size:11px;color:var(--muted)}
+
+.chart{display:block;width:100%;height:130px;background:var(--paper);border:1px solid var(--line);border-radius:4px}
+.gl{stroke:var(--ph);stroke-width:1;vector-effect:non-scaling-stroke}
+.ln{fill:none;stroke-width:2;vector-effect:non-scaling-stroke}
+.ln.a{stroke:var(--accent)}
+.ln.b{stroke:var(--ph2)}
+.cb1{fill:var(--accent);fill-opacity:.65}
+.cb2{fill:var(--ph2)}
+.cb3{fill:var(--ph)}
+.xax{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px}
+.lg{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:6px}
+.lg span{display:inline-flex;align-items:center;gap:5px}
+.lg i{display:inline-block;width:12px;height:8px;border-radius:2px}
+.lg i.a{background:var(--accent);opacity:.65}.lg i.b{background:var(--ph2)}.lg i.c{background:var(--ph)}
+
+.hbars{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:6px 10px}
+.hb{display:grid;grid-template-columns:minmax(70px,1fr) 2.4fr 46px;gap:8px;align-items:center;font-size:11px;margin:5px 0}
+.hl{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track{display:block;height:11px;background:var(--fill);border-radius:2px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--accent);opacity:.55}
+.hb.on .track i{opacity:1}
+.hb.on .hl{color:var(--ink);font-weight:600}
+.hv{text-align:right}
+
+.tbl{background:var(--paper);border:1px solid var(--line);border-radius:4px;overflow:hidden;font-size:11px}
+.tr{display:grid;grid-template-columns:var(--cols);gap:10px;align-items:center;padding:6px 10px;border-top:1px solid var(--line)}
+.tr.th{border-top:0;background:var(--fill);color:var(--muted);font-weight:600}
+.r{text-align:right}
+.bar{display:block;height:7px;border-radius:4px;background:var(--ph)}
+.heat{display:block;text-align:right;padding:2px 6px;border-radius:2px;background:color-mix(in srgb,var(--accent) var(--h),transparent)}
+
+.spec{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;border:1px solid var(--line);border-radius:6px;background:var(--paper)}
+.sp-h{padding:14px 16px}
+.sp-h p{font-size:12.5px;color:var(--muted)}
+.sr{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;padding:12px 16px;border-top:1px solid var(--line);cursor:pointer}
+.sr.active{background:var(--fill);box-shadow:inset 3px 0 0 var(--focus)}
+.srh{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.srh strong{font-size:13px}
+.sr dl{margin:8px 0 0;display:grid;grid-template-columns:72px minmax(0,1fr);gap:4px 8px;font-size:12px}
+.sr dt{color:var(--muted)}
+.sr dd{margin:0}
+
+.build{margin-top:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:16px 18px;min-width:0}
+.card.wide{grid-column:1/-1}
+.card ul{margin:8px 0 0;padding-left:20px;font-size:13.5px}
+.card li{margin:6px 0}
+.scroll{overflow-x:auto}
+table.src{border-collapse:collapse;width:100%;min-width:720px;font-size:13px;margin-top:10px}
+table.src th,table.src td{text-align:left;vertical-align:top;padding:9px 10px;border-top:1px solid var(--line)}
+table.src th{color:var(--muted);font-weight:600;font-size:12px;border-top:0}
+pre{margin:10px 0 0;padding:10px 12px;background:var(--fill);border:1px solid var(--line);border-radius:4px;font-size:12px;overflow-x:auto;line-height:1.5}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px}
+.foot{margin-top:18px;font-size:12.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>99 Bikes AU: LLM page layout</h1>
+  <p class="sub">Proposed layout for the LLM Overview page. Each block is tagged with its data source and whether it is new or a revision of what the page has today. Click a block or a spec row to link them. Numbers are placeholders.</p>
+
+  <div class="fbar" id="fbar">
+    <span>Highlight:</span>
+    <button data-f="all" aria-pressed="true">All blocks</button>
+    <button data-f="new" aria-pressed="false">New</button>
+    <button data-f="rev" aria-pressed="false">Revise</button>
+    <span style="margin-left:8px">Source:</span>
+    <span class="chip ga4">GA4</span><span class="chip gsc">GSC</span><span class="chip ahr">Ahrefs</span>
+  </div>
+
+  <div class="stage">
+    <div class="canvaswrap"><div class="canvas" id="canvas" data-filter="all"></div></div>
+    <aside class="spec" id="spec" aria-label="Component spec"></aside>
+  </div>
+
+  <div class="build">
+    <section class="card wide">
+      <h2>Where each source fits</h2>
+      <div class="scroll">
+      <table class="src">
+        <thead><tr><th>Source</th><th>What it adds</th><th>How it connects</th><th>Check first</th></tr></thead>
+        <tbody>
+          <tr><td><span class="chip ga4">GA4</span></td><td>AI sessions, revenue, landing pages, products and funnel steps by AI channel.</td><td>Already connected. Reuse the AI channel grouping the current page uses.</td><td>It only counts clicks that arrive. AI visits with no referrer land in Direct, so read the numbers as a floor.</td></tr>
+          <tr><td><span class="chip gsc">GSC</span></td><td>Site clicks, impressions, queries and pages. Long and question-style queries as a proxy for AI search demand.</td><td>Native Search Console connector.</td><td>Google's Generative AI report (AI Overviews and AI Mode impressions, data from 18 May 2026) shows impressions only. At least one connector vendor reported it is not in the Search Analytics API yet, so confirm in your connector. If it is missing, export the CSV from Search Console into Sheets.</td></tr>
+          <tr><td><span class="chip ahr">Ahrefs</span></td><td>AI mentions, AI impressions and share of voice by AI platform, plus a competitor comparison.</td><td>Ahrefs Brand Radar connector for Looker Studio. Ahrefs lists its connectors for Advanced plans and higher, and Brand Radar needs its own add-on.</td><td>Modelled from Ahrefs' prompt database, so treat it as directional. It tells you whether the brand is mentioned, not how much traffic follows.</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Calculated fields</h2>
+      <pre><code>-- AI share of site sessions (GA4)
+-- Channel names must match your AI channel grouping exactly
+SUM(CASE WHEN `AI New Channel Grouping` IN
+  ("ChatGPT","Google Gemini","Perplexity",
+   "Microsoft Copilot","Claude","kagi.com / referral")
+  THEN Sessions ELSE 0 END) / SUM(Sessions)
+
+-- Landing page type (GA4), adjust to the site's URL paths
+CASE
+  WHEN REGEXP_MATCH(`Landing page`, "^/$") THEN "Homepage"
+  WHEN REGEXP_MATCH(`Landing page`, "^/products/") THEN "Product"
+  WHEN REGEXP_MATCH(`Landing page`, "^/collections/") THEN "Category"
+  WHEN REGEXP_MATCH(`Landing page`, "^/blogs?/") THEN "Guide"
+  ELSE "Other"
+END
+
+-- Long query flag (GSC): 6 or more words
+REGEXP_MATCH(Query, "^(\\S+\\s+){5,}\\S+$")
+
+-- Question-style flag (GSC)
+REGEXP_MATCH(LOWER(Query),
+  "^(how|what|which|best|why|can|does|is|are|should)\\b")
+
+-- Long-query share of impressions (GSC)
+SUM(CASE WHEN REGEXP_MATCH(Query, "^(\\S+\\s+){5,}\\S+$")
+  THEN Impressions ELSE 0 END) / SUM(Impressions)</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>Replaced on the current page</h2>
+      <ul>
+        <li>The second Engagement rate card repeats the first. Block 2 swaps it for AI share of site sessions.</li>
+        <li>The donut and the treemap both show ChatGPT at about 97%, so the smaller channels vanish. Block 6 replaces both.</li>
+        <li>The Channel Distribution chart mixes a log-scale bar chart with a line chart. Block 7 shows the same data on one linear axis.</li>
+        <li>The two separate daily trend charts become one combo chart in block 3.</li>
+        <li>The table shows null for average purchase revenue on channels with no purchases. Show 0 instead.</li>
+        <li>The title asks how ChatGPT, Perplexity and Claude drive traffic to your pages, but no landing page data appears. Blocks 8 to 11 answer it.</li>
+        <li>The header says the data comes from GA4 and GSC, but no GSC data appears yet. Section 4 adds it.</li>
+      </ul>
+    </section>
+  </div>
+  <p class="foot">Keep the existing logos, title bar, red section bars and date range style from the current page. This layout changes the blocks inside them.</p>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const CLS = {ga4:'ga4', gsc:'gsc', gsccsv:'gsc', ahr:'ahr', ctrl:'ctrl'};
+const LBL = {ga4:'GA4', gsc:'GSC', gsccsv:'GSC (CSV import)', ahr:'Ahrefs', ctrl:'Control'};
+const chip = s => `<span class="chip ${CLS[s]}">${LBL[s]}</span>`;
+const stChip = st => st === 'new' ? '<span class="st new">New</span>' : '<span class="st rev">Revise</span>';
+
+const blk = (id, span, src, title, body, st, opt) =>
+  `<section class="blk${opt ? ' opt' : ''}" style="grid-column:span ${span}" data-id="${id}" data-q="${CLS[src]}" data-st="${st}" tabindex="0" aria-label="${id}. ${title}">
+    <span class="badge">${id}</span>
+    <header class="bh"><h3>${title}</h3><span class="tags">${stChip(st)}${opt ? '<span class="chip opt">Optional</span>' : ''}${chip(src)}</span></header>
+    ${body}
+  </section>`;
+const sec = (t, src) => `<div class="sec" style="grid-column:span 12"><span>${t}</span>${src ? chip(src) : ''}</div>`;
+
+const pill = (t, isNew) => `<span class="pill${isNew ? ' new' : ''}">${t}</span>`;
+const kpi = (l, v, d) => `<div class="kpi"><span class="kl">${l}</span><strong>${v}</strong><span class="kd">${d}</span></div>`;
+
+const grid = [25, 50, 75].map(y => `<line class="gl" x1="0" x2="300" y1="${y}" y2="${y}"/>`).join('');
+const DL = ['Sep 28', 'Sep 30', 'Oct 1', 'Oct 3', 'Oct 4'];
+const lineSvg = (lines, labels) => `<svg class="chart" viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true">${grid}${lines.map(l => `<polyline class="ln ${l.c}" points="${l.p}"/>`).join('')}</svg>
+  <div class="xax">${(labels || DL).map(x => `<span>${x}</span>`).join('')}</div>`;
+const legend = items => `<div class="lg">${items.map(([c, t]) => `<span><i class="${c}"></i>${t}</span>`).join('')}</div>`;
+const L1 = "0,70 25,62 50,66 75,48 100,55 125,38 150,44 175,30 200,36 225,22 250,28 275,16 300,20";
+const L2 = "0,86 25,80 50,83 75,73 100,77 125,66 150,70 175,61 200,64 225,53 250,57 275,49 300,51";
+const L3 = "0,60 30,56 60,58 90,50 120,52 150,44 180,46 210,38 240,36 270,30 300,28";
+
+const hbars = (rows, hi) => `<div class="hbars">${rows.map(([l, w, v], i) => `<div class="hb${i === hi ? ' on' : ''}"><span class="hl">${l}</span><span class="track"><i style="width:${w}%"></i></span><span class="hv">${v}</span></div>`).join('')}</div>`;
+
+const bar = w => `<span class="bar" style="width:${w}%"></span>`;
+const gt = (head, cols, rows, numFrom) => `<div class="tbl" style="--cols:${cols}"><div class="tr th">${head.map((h, i) => `<span class="${i >= numFrom ? 'r' : ''}">${h}</span>`).join('')}</div>${rows.map(r => `<div class="tr">${r.map((c, i) => `<span class="${i >= numFrom ? 'r' : ''}">${c}</span>`).join('')}</div>`).join('')}</div>`;
+const heat = (t, h) => `<span class="heat" style="--h:${h}%">${t}</span>`;
+
+const stacked = (() => {
+  const a = [18,14,16,16,15,14,20,34,52,36], b = [3,2,2,2,2,2,3,4,5,3], c = [2,1,1,2,1,1,2,3,3,2];
+  const rects = a.map((v, i) => {
+    const x = i * 30 + 4, h1 = v * 1.5, h2 = b[i] * 1.5, h3 = c[i] * 1.5;
+    return `<rect class="cb1" x="${x}" y="${100 - h1}" width="22" height="${h1}"/><rect class="cb2" x="${x}" y="${100 - h1 - h2}" width="22" height="${h2}"/><rect class="cb3" x="${x}" y="${100 - h1 - h2 - h3}" width="22" height="${h3}"/>`;
+  }).join('');
+  return `<svg class="chart" viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true">${grid}${rects}</svg>
+  <div class="xax"><span>Jan</span><span>Mar</span><span>May</span><span>Jul</span><span>Oct</span></div>` + legend([['a', 'ChatGPT'], ['b', 'Google Gemini'], ['c', 'Other AI channels']]);
+})();
+
+const PAGE = () => [
+  blk(1, 12, 'ctrl', 'Header and controls',
+    `<div class="hdr"><div class="brand"><span class="logo"></span><div class="ttl"><strong>99 Bikes AU | LLM Report</strong><small>Data from GA4, Google Search Console and Ahrefs</small></div></div><div class="ctrls">${pill('Sep 28 to Oct 4 ▾')}${pill('Compare: previous period')}${pill('AI channel: All ▾', true)}</div></div>`, 'rev'),
+
+  sec('1. AI traffic at a glance', 'ga4'),
+  blk(2, 12, 'ga4', 'AI traffic headline numbers',
+    `<div class="kpis">${kpi('Sessions','2,627','PoP and YoY')}${kpi('Total users','1,995','PoP and YoY')}${kpi('Total revenue','$13,246','PoP and YoY')}${kpi('CVR','1.67%','PoP and YoY')}${kpi('AOV','$288','PoP and YoY')}${kpi('Purchasers','41','PoP and YoY')}${kpi('Engagement rate','69.9%','PoP and YoY')}${kpi('AI share of site sessions','4.1%','PoP and YoY')}</div>`, 'rev'),
+  blk(3, 8, 'ga4', 'AI sessions and revenue by day', lineSvg([{c:'a',p:L1},{c:'b',p:L2}]) + legend([['a','Sessions (left axis)'],['b','Total revenue (right axis)']]), 'rev'),
+  blk(4, 4, 'ga4', 'AI share of site sessions by week', lineSvg([{c:'a',p:L3}], ['Wk 32','Wk 34','Wk 36','Wk 38','Wk 40']), 'new'),
+
+  sec('2. LLM channel performance', 'ga4'),
+  blk(5, 12, 'ga4', 'Performance by AI channel',
+    gt(['AI channel','Sessions','Users','Eng. rate','Avg duration','Purchasers','Revenue','CVR','Rev. per session'], 'minmax(100px,1.3fr) repeat(8,minmax(54px,.8fr))', [
+      ['ChatGPT','2,534','1,945','69.97%','00:23:00','41',heat('$13,151',80),'1.62%','$5.19'],
+      ['Google Gemini','42','27','61.9%','00:30:43','2',heat('$95',20),'4.76%','$2.26'],
+      ['kagi.com / referral','24','15','83.33%','00:05:27','0',heat('$0',4),'0.00%','$0.00'],
+      ['Perplexity','15','12','80%','00:15:59','0',heat('$0',4),'0.00%','$0.00'],
+      ['Microsoft Copilot','9','8','66.67%','00:01:04','0',heat('$0',4),'0.00%','$0.00'],
+      ['Claude','2','2','50%','00:10:39','0',heat('$0',4),'0.00%','$0.00']
+    ], 1), 'rev'),
+  blk(6, 5, 'ga4', 'Sessions by channel, excluding ChatGPT', hbars([['Google Gemini',100,'42'],['kagi.com / referral',57,'24'],['Perplexity',36,'15'],['Microsoft Copilot',21,'9'],['Claude',5,'2']]), 'rev'),
+  blk(7, 7, 'ga4', 'AI sessions by channel, monthly', stacked, 'rev'),
+
+  sec('3. Which pages do LLMs send people to?', 'ga4'),
+  blk(8, 8, 'ga4', 'Landing pages from AI',
+    gt(['Landing page','Sessions','Eng. rate','Purchasers','Revenue'], 'minmax(160px,2.4fr) repeat(4,minmax(58px,.8fr))',
+      [612, 388, 240, 171, 133, 98, 74, 61].map((s, i) => [bar(84 - i * 6), s, (72 - i * 3) + '%', Math.max(0, 9 - i * 2), '$' + Math.max(0, 5200 - i * 640).toLocaleString('en-US')]), 1), 'new'),
+  blk(9, 4, 'ga4', 'Landing page type', hbars([['Product',52,'52%'],['Category',21,'21%'],['Guide',14,'14%'],['Homepage',9,'9%'],['Other',4,'4%']]), 'new'),
+  blk(10, 6, 'ga4', 'Ecommerce funnel for AI sessions', hbars([['Sessions',100,'2,627'],['View item',62,'1,630'],['Add to cart',9,'236'],['Begin checkout',4,'110'],['Purchase',2,'41']]), 'new'),
+  blk(11, 6, 'ga4', 'Top products from AI sessions',
+    gt(['Item name','Viewed','Purchased','Item revenue'], 'minmax(120px,2fr) repeat(3,minmax(60px,.8fr))',
+      [310, 244, 190, 142, 118, 90].map((v, i) => [bar(86 - i * 8), v, Math.max(1, 14 - i * 2), '$' + Math.max(300, 6100 - i * 900).toLocaleString('en-US')]), 1), 'new'),
+
+  sec('4. AI and AI-style search in Google', 'gsc'),
+  blk(12, 12, 'gsc', 'Search performance baseline',
+    `<div class="kpis">${kpi('Clicks','48.2K','vs previous period')}${kpi('Impressions','2.1M','vs previous period')}${kpi('CTR','2.3%','vs previous period')}${kpi('Average position','14.8','vs previous period')}</div>`, 'new'),
+  blk(13, 7, 'gsc', 'AI-style queries (long and question-based)',
+    gt(['Query','Words','Clicks','Impressions','CTR','Position'], 'minmax(150px,2.4fr) repeat(5,minmax(52px,.7fr))',
+      [[7, 42, '3.1K'], [8, 31, '2.6K'], [6, 28, '2.2K'], [9, 19, '1.8K'], [6, 16, '1.4K'], [7, 11, '1.1K']].map((r, i) => [bar(88 - i * 7), r[0], r[1], r[2], (1.9 - i * .2).toFixed(1) + '%', (8 + i * 2.1).toFixed(1)]), 1), 'new'),
+  blk(14, 5, 'gsc', 'Long-query share of impressions by week', lineSvg([{c:'a',p:L3}], ['Wk 32','Wk 34','Wk 36','Wk 38','Wk 40']), 'new'),
+  blk(15, 6, 'gsccsv', 'AI Overviews and AI Mode impressions by week', lineSvg([{c:'a',p:L1}], ['18 May','Jun','Jul','Aug','Sep']), 'new', true),
+  blk(16, 6, 'gsccsv', 'Pages with the most AI impressions',
+    gt(['Page','AI impressions'], 'minmax(160px,3fr) minmax(80px,1fr)', [9400, 7100, 5200, 3800, 2900, 2100].map((v, i) => [bar(90 - i * 9), (v / 1000).toFixed(1) + 'K']), 1), 'new', true),
+
+  sec('5. AI brand visibility (optional)', 'ahr'),
+  blk(17, 12, 'ahr', 'AI visibility snapshot',
+    `<div class="kpis">${kpi('AI mentions','1.2K','vs previous period')}${kpi('AI impressions','86K','vs previous period')}${kpi('AI share of voice','7.4%','vs previous period')}</div>`, 'new', true),
+  blk(18, 6, 'ahr', 'Share of voice by AI platform', hbars([['AI Overviews',100,'11%'],['ChatGPT',74,'8%'],['Gemini',58,'6%'],['Perplexity',41,'5%'],['Copilot',20,'2%']]), 'new', true),
+  blk(19, 6, 'ahr', 'Share of voice vs competitors', hbars([['99 Bikes',62,'7.4%'],['Competitor A',100,'12%'],['Competitor B',81,'9.6%'],['Competitor C',54,'6.4%'],['Competitor D',33,'3.9%']], 0), 'new', true)
+].join('');
+
+const S = (id, name, src, st, chart, dim, met, note, opt) => ({id, name, src, st, chart, dim, met, note, opt});
+const SPEC = [
+  S(1, 'Header and controls', 'ctrl', 'rev', 'Logo, title, date range with comparison, multi-select drop-down', 'AI New Channel Grouping (control field)', 'None', 'Add the AI channel drop-down so every GA4 block can be cut by ChatGPT, Gemini, Perplexity and so on. Update the subtitle to name the sources you actually use.'),
+  S(2, 'AI traffic headline numbers', 'ga4', 'rev', 'Scorecard x8 with comparison range', 'None', 'Sessions, Total users, Total revenue, CVR, AOV, Total purchasers, Engagement rate, AI share of site sessions', 'Drop Views and the duplicate Engagement rate. Total users moves in here, so the note about users above the trend chart can go.'),
+  S(3, 'AI sessions and revenue by day', 'ga4', 'rev', 'Combo chart, columns plus line, dual axis', 'Date', 'Sessions, Total revenue', 'Replaces the two separate trend charts, so you can see whether revenue spikes follow traffic. Use weekly granularity for ranges over 60 days.'),
+  S(4, 'AI share of site sessions by week', 'ga4', 'new', 'Line chart', 'Year Week', 'AI share of site sessions (calculated)', 'Shows whether AI is growing as a share of the site, not only in volume. Needs a source that includes all channels, or a blend with an unfiltered GA4 source.'),
+  S(5, 'Performance by AI channel', 'ga4', 'rev', 'Table, 6 to 8 rows, heatmap on Revenue', 'AI New Channel Grouping', 'Sessions, Total users, Engagement rate, Average session duration, Total purchasers, Total revenue, CVR, Revenue per session', 'Adds CVR and revenue per session. Wrap purchase revenue in IFNULL so channels with no purchases show 0, not null. Hide the pagination text.'),
+  S(6, 'Sessions by channel, excluding ChatGPT', 'ga4', 'rev', 'Bar chart, horizontal', 'AI New Channel Grouping (exclude ChatGPT)', 'Sessions', 'Replaces the donut and the treemap, which both hide the small channels behind ChatGPT. Say "excluding ChatGPT" in the title.'),
+  S(7, 'AI sessions by channel, monthly', 'ga4', 'rev', 'Stacked column chart', 'Year Month, AI New Channel Grouping (breakdown)', 'Sessions', 'Replaces the log-scale bar plus line combination in Channel Distribution. Same data on one linear axis. Group the small channels into Other if the legend gets crowded.'),
+  S(8, 'Landing pages from AI', 'ga4', 'new', 'Table, 10 rows', 'Landing page', 'Sessions, Engagement rate, Total purchasers, Total revenue', 'Answers the question in the section title, which the page does not answer today. Use the channel drop-down to see where Perplexity or Claude send people.'),
+  S(9, 'Landing page type', 'ga4', 'new', 'Bar chart, horizontal, 5 rows', 'Landing page type (calculated)', 'Sessions', 'Rolls pages up into homepage, product, category and guide. Adjust the patterns to the site\'s URL paths.'),
+  S(10, 'Ecommerce funnel for AI sessions', 'ga4', 'new', 'Bar chart, horizontal, 5 rows', 'Event name (filtered to funnel events)', 'Event count', 'Filter to session_start, view_item, add_to_cart, begin_checkout and purchase. These are event counts, so read the chart as a drop-off shape.'),
+  S(11, 'Top products from AI sessions', 'ga4', 'new', 'Table, 6 to 8 rows', 'Item name', 'Items viewed, Items purchased, Item revenue', 'Item-scoped fields, so keep them in their own table. The channel drop-down still applies.'),
+  S(12, 'Search performance baseline', 'gsc', 'new', 'Scorecard x4 with comparison range', 'None', 'Clicks, Impressions, CTR, Average position', 'Site-wide organic baseline to read next to the AI numbers. Point it at the 99 Bikes AU property.'),
+  S(13, 'AI-style queries', 'gsc', 'new', 'Table, 10 rows, sorted by Impressions', 'Query (filtered to long or question-style)', 'Clicks, Impressions, CTR, Average position', 'Filter with the long-query and question-style flags in the calculated fields. Longer, conversational queries are the closest proxy GSC gives for AI search demand.'),
+  S(14, 'Long-query share of impressions by week', 'gsc', 'new', 'Line chart', 'Year Week', 'Long-query share (calculated)', 'Directional only. GSC leaves anonymised queries out of query-level data, so the share will not match the site total.'),
+  S(15, 'AI Overviews and AI Mode impressions by week', 'gsccsv', 'new', 'Time series', 'Date', 'AI impressions', 'From Search Console\'s Generative AI report. Impressions only, data from 18 May 2026. Connect it directly if your connector exposes it, otherwise export the CSV to Google Sheets and connect the sheet.', true),
+  S(16, 'Pages with the most AI impressions', 'gsccsv', 'new', 'Table, 10 rows', 'Page', 'AI impressions', 'Same export as block 15. Compare the top pages here with the landing pages in block 8.', true),
+  S(17, 'AI visibility snapshot', 'ahr', 'new', 'Scorecard x3 with comparison range', 'None', 'AI mentions, AI impressions, AI share of voice', 'From the Brand Radar connector. Skip section 5 if the Ahrefs plan does not include the connectors or the add-on.', true),
+  S(18, 'Share of voice by AI platform', 'ahr', 'new', 'Bar chart, horizontal', 'AI platform', 'AI share of voice', 'Shows which engines mention the brand, including when no click follows. This is the gap GA4 cannot fill.', true),
+  S(19, 'Share of voice vs competitors', 'ahr', 'new', 'Bar chart, horizontal', 'Brand', 'AI share of voice', 'Pick 3 to 5 competitors in Brand Radar first. Colour the 99 Bikes bar in the theme red.', true)
+];
+
+const specHtml = () => `<div class="sp-h"><h2>Block spec</h2><p>${SPEC.length} blocks. Optional blocks are dashed on the canvas.</p></div>` +
+  SPEC.map(i => `<article class="sr" data-id="${i.id}" tabindex="0"><span class="badge">${i.id}</span><div>
+    <div class="srh"><strong>${i.name}</strong><span class="tags">${stChip(i.st)}${i.opt ? '<span class="chip opt">Optional</span>' : ''}${chip(i.src)}</span></div>
+    <dl><dt>Chart</dt><dd>${i.chart}</dd><dt>Dimension</dt><dd>${i.dim}</dd><dt>Metrics</dt><dd>${i.met}</dd><dt>Note</dt><dd>${i.note}</dd></dl>
+  </div></article>`).join('');
+
+$('#canvas').innerHTML = PAGE();
+$('#spec').innerHTML = specHtml();
+
+function select(id, fromSpec) {
+  document.querySelectorAll('[data-id].active').forEach(e => e.classList.remove('active'));
+  document.querySelectorAll(`#canvas [data-id="${id}"], #spec [data-id="${id}"]`).forEach(e => e.classList.add('active'));
+  const wide = window.matchMedia('(min-width:1081px)').matches;
+  if (fromSpec) {
+    const b = document.querySelector(`#canvas [data-id="${id}"]`);
+    if (b) b.scrollIntoView({block: 'center'});
+  } else if (wide) {
+    const row = document.querySelector(`#spec [data-id="${id}"]`);
+    if (row) row.scrollIntoView({block: 'nearest'});
+  }
+}
+document.addEventListener('click', e => {
+  const f = e.target.closest('#fbar button');
+  if (f) {
+    $('#canvas').dataset.filter = f.dataset.f;
+    document.querySelectorAll('#fbar button').forEach(b => b.setAttribute('aria-pressed', String(b === f)));
+    return;
+  }
+  const el = e.target.closest('#canvas [data-id], #spec [data-id]');
+  if (el) select(el.dataset.id, !!el.closest('#spec'));
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const el = e.target.closest && e.target.closest('#canvas [data-id], #spec [data-id]');
+  if (el) { e.preventDefault(); select(el.dataset.id, !!el.closest('#spec')); }
+});
+</script>
+</body>
+</html>

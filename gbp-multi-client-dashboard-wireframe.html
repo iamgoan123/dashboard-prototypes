@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Google Business Profile dashboard wireframe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E8EBEE; --paper:#FFFFFF; --ink:#1B2127; --muted:#5B6672; --line:#C6CCD3;
+  --fill:#F4F5F7; --ph:#D6DBE0; --ph2:#B7BEC6;
+  --int:#B45309; --int-bg:#FBEBD3;
+  --cs:#1E7B4F; --cs-bg:#D9F0E3;
+  --ctrl:#455260; --ctrl-bg:#E3E7EB;
+  --focus:#2B5CE6;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#13171B; --paper:#1C2227; --ink:#E7EAED; --muted:#9AA5AF; --line:#38414A;
+    --fill:#232A30; --ph:#303941; --ph2:#47525D;
+    --int:#F4B35E; --int-bg:#3A2A12;
+    --cs:#6FD3A0; --cs-bg:#173226;
+    --ctrl:#AAB4BE; --ctrl-bg:#2A3239;
+    --focus:#8FA9FF;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#13171B; --paper:#1C2227; --ink:#E7EAED; --muted:#9AA5AF; --line:#38414A;
+  --fill:#232A30; --ph:#303941; --ph2:#47525D;
+  --int:#F4B35E; --int-bg:#3A2A12;
+  --cs:#6FD3A0; --cs-bg:#173226;
+  --ctrl:#AAB4BE; --ctrl-bg:#2A3239;
+  --focus:#8FA9FF;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Schibsted Grotesk',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;line-height:1.45;-webkit-text-size-adjust:100%}
+.wrap{max-width:1360px;margin:0 auto;padding:22px 18px 40px}
+h1{font-size:24px;line-height:1.2;margin:0 0 6px;font-weight:700}
+h2{font-size:15px;margin:0 0 4px;font-weight:650}
+h3{font-size:13px;margin:0;font-weight:650}
+p{margin:0}
+.sub{color:var(--muted);font-size:14px;max-width:84ch}
+.sub .chip{margin:0 2px}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+.chip{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.chip.int{color:var(--int);background:var(--int-bg)}
+.chip.cs{color:var(--cs);background:var(--cs-bg)}
+.chip.ctrl,.chip.opt{color:var(--ctrl);background:var(--ctrl-bg)}
+
+.tabs{display:flex;gap:4px;margin:18px 0 14px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tabs button{appearance:none;border:0;background:none;color:var(--muted);font:inherit;font-size:14px;font-weight:600;padding:10px 14px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+
+.stage{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:start}
+@media (max-width:1080px){.stage{grid-template-columns:minmax(0,1fr)}.spec{position:static!important;max-height:none!important}}
+
+.canvaswrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--paper)}
+.canvas{min-width:780px;padding:20px 18px 18px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px;background:var(--paper)}
+
+.blk{position:relative;min-width:0;border:1px solid var(--line);border-left:4px solid var(--accent,var(--line));border-radius:4px;padding:10px 12px 12px;background:var(--fill);cursor:pointer}
+.blk[data-q="int"]{--accent:var(--int)}
+.blk[data-q="cs"]{--accent:var(--cs)}
+.blk[data-q="ctrl"]{--accent:var(--ctrl)}
+.blk.opt{border-style:dashed;border-left-style:solid}
+.blk.active{outline:2px solid var(--focus);outline-offset:2px}
+.badge{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--paper);font-size:12px;font-weight:700;flex:none}
+.blk>.badge{position:absolute;top:-10px;left:-13px}
+.bh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.tags{display:flex;gap:4px;flex-wrap:wrap}
+
+.hdr{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px}
+.brand strong{display:block;font-size:15px}
+.brand small{display:block;color:var(--muted);font-size:12px}
+.logo{width:34px;height:34px;border-radius:50%;background:var(--ph2)}
+.ctrls{display:flex;gap:8px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:5px 12px;font-size:12px}
+
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:8px}
+.kpis.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.kpi{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;gap:1px}
+.kl{font-size:11px;color:var(--muted)}
+.kpi strong{font-size:22px;line-height:1.15;font-weight:700}
+.kd{font-size:11px;color:var(--muted)}
+
+.chart{display:block;width:100%;height:130px;background:var(--paper);border:1px solid var(--line);border-radius:4px}
+.gl{stroke:var(--ph);stroke-width:1;vector-effect:non-scaling-stroke}
+.ln{fill:none;stroke-width:2;vector-effect:non-scaling-stroke}
+.ln.a{stroke:var(--accent)}
+.ln.b{stroke:var(--ph2)}
+.ln.c{stroke:var(--muted);stroke-dasharray:4 3}
+.cb1{fill:var(--accent);fill-opacity:.7}
+.cb2{fill:var(--accent);fill-opacity:.4}
+.cb3{fill:var(--ph2)}
+.cb4{fill:var(--ph)}
+.cb0{fill:var(--accent);fill-opacity:.6}
+.xax{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px}
+.lg{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:6px}
+.lg span{display:inline-flex;align-items:center;gap:5px}
+.lg i{display:inline-block;width:12px;height:8px;border-radius:2px}
+.lg i.l1{background:var(--accent);opacity:.7}.lg i.l2{background:var(--accent);opacity:.4}.lg i.l3{background:var(--ph2)}.lg i.l4{background:var(--ph)}
+.lg i.a{background:var(--accent);opacity:.7}.lg i.b{background:var(--ph2)}.lg i.c{background:var(--muted)}
+
+.hbars{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:6px 10px}
+.hb{display:grid;grid-template-columns:minmax(70px,1fr) 2.4fr 46px;gap:8px;align-items:center;font-size:11px;margin:5px 0}
+.hl{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track{display:block;height:11px;background:var(--fill);border-radius:2px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--accent);opacity:.6}
+.hv{text-align:right}
+
+.tbl{background:var(--paper);border:1px solid var(--line);border-radius:4px;overflow:hidden;font-size:11px}
+.tr{display:grid;grid-template-columns:var(--cols);gap:10px;align-items:center;padding:6px 10px;border-top:1px solid var(--line)}
+.tr.th{border-top:0;background:var(--fill);color:var(--muted);font-weight:600}
+.r{text-align:right}
+.bar{display:block;height:7px;border-radius:4px;background:var(--ph)}
+.heat{display:block;text-align:right;padding:2px 6px;border-radius:2px;background:color-mix(in srgb,var(--accent) var(--h),transparent)}
+.stars{letter-spacing:1px;color:var(--accent)}
+
+.spec{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;border:1px solid var(--line);border-radius:6px;background:var(--paper)}
+.sp-h{padding:14px 16px}
+.sp-h p{font-size:12.5px;color:var(--muted)}
+.sr{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;padding:12px 16px;border-top:1px solid var(--line);cursor:pointer}
+.sr.active{background:var(--fill);box-shadow:inset 3px 0 0 var(--focus)}
+.srh{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.srh strong{font-size:13px}
+.sr dl{margin:8px 0 0;display:grid;grid-template-columns:72px minmax(0,1fr);gap:4px 8px;font-size:12px}
+.sr dt{color:var(--muted)}
+.sr dd{margin:0}
+
+.build{margin-top:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:16px 18px;min-width:0}
+.card.wide{grid-column:1/-1}
+.card ul{margin:8px 0 0;padding-left:20px;font-size:13.5px}
+.card li{margin:6px 0}
+.scroll{overflow-x:auto}
+table.src{border-collapse:collapse;width:100%;min-width:720px;font-size:13px;margin-top:10px}
+table.src th,table.src td{text-align:left;vertical-align:top;padding:9px 10px;border-top:1px solid var(--line)}
+table.src th{color:var(--muted);font-weight:600;font-size:12px;border-top:0}
+pre{margin:10px 0 0;padding:10px 12px;background:var(--fill);border:1px solid var(--line);border-radius:4px;font-size:12px;overflow-x:auto;line-height:1.5}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px}
+.foot{margin-top:18px;font-size:12.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Google Business Profile dashboard wireframe</h1>
+  <p class="sub">One Looker Studio build for every client on the Supermetrics Google My Business connector. Blocks are tagged <span class="chip int">Internal only</span> when they list several clients, and <span class="chip cs">Client-safe</span> when they show one location at a time. Click a block or a spec row to link them. Numbers are placeholders.</p>
+
+  <div class="tabs" role="tablist" id="tabs">
+    <button role="tab" data-k="p1" aria-selected="true">Page 1: Portfolio (internal)</button>
+    <button role="tab" data-k="p2" aria-selected="false">Page 2: Location detail</button>
+    <button role="tab" data-k="p3" aria-selected="false">Page 3: Reviews</button>
+  </div>
+
+  <div class="stage">
+    <div class="canvaswrap"><div class="canvas" id="canvas"></div></div>
+    <aside class="spec" id="spec" aria-label="Component spec"></aside>
+  </div>
+
+  <div class="build">
+    <section class="card wide">
+      <h2>Setting it up for many clients</h2>
+      <div class="scroll">
+      <table class="src">
+        <thead><tr><th>Approach</th><th>How</th><th>Best for</th><th>Watch out</th></tr></thead>
+        <tbody>
+          <tr><td><strong>One report per client</strong></td><td>Build the template once, then make a copy per client and swap the data source to that client's connection.</td><td>Anything a client will open. Each client sees only their own locations.</td><td>Looker Studio does not sync copies, so a later fix to the template has to be repeated in every copy. Lock the layout before you roll it out.</td></tr>
+          <tr><td><strong>One internal rollup</strong></td><td>One data source holding every client's locations, with a Client field and a Client drop-down. Pages 1 to 3 all work from it.</td><td>Your own team, for spotting locations that fell over across the whole book.</td><td>If the data source runs on your credentials, any viewer can reach every client's locations. Do not share it with clients.</td></tr>
+          <tr><td><strong>Account picker</strong></td><td>Tick "Allow Select Accounts to be modified in reports" on the Supermetrics data source so report editors can change which locations load.</td><td>Quick checks on the internal rollup.</td><td>It lets editors point the report at any account in the connection. Leave it off for client copies.</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="foot">Recommendation: build the internal rollup and one client copy from the same layout. Page 1 stays in the rollup only. Pages 2 and 3 go into the client copies.</p>
+    </section>
+
+    <section class="card">
+      <h2>Check before you connect everything</h2>
+      <ul>
+        <li><strong>Licence:</strong> Supermetrics counts each Location as a separate account, and your plan limits how many accounts you can use at once. The licence screen in your Pinterest setup listed 55 accounts, so add up locations across all clients first.</li>
+        <li><strong>Search terms:</strong> monthly only, usually available after the month ends, and Google hides low-volume terms.</li>
+        <li><strong>Average star rating:</strong> returns nothing when the period has no reviews. Label it "rating for period".</li>
+        <li><strong>Time zones:</strong> set the report time zone to the clients' local time, or daily numbers can shift by a day.</li>
+        <li><strong>Refresh:</strong> Supermetrics suggests refreshing every 2 to 3 days, so do not promise live numbers.</li>
+        <li><strong>Impressions:</strong> Google counts one per user per day, so they will not match Search Console impressions.</li>
+        <li><strong>Old fields:</strong> the connector marks post views, photo views, the old search query metrics and followers as deprecated. Skip them if you copy an older template.</li>
+        <li>Field names here follow the Supermetrics field list. Confirm the exact labels, especially the review fields, in the field picker.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Calculated fields</h2>
+      <pre><code>-- Total impressions (confirm the four surface labels)
+`Impressions: Search desktop` + `Impressions: Search mobile`
+  + `Impressions: Maps desktop` + `Impressions: Maps mobile`
+
+-- Interaction rate
+SUM(`Total actions`) / SUM(`Total impressions`)
+
+-- Client (internal rollup only)
+-- Easiest: use the Location group or business account
+-- dimension if each client has its own.
+-- Otherwise map by name, or blend a Location ID to Client
+-- Google Sheet, which is easier to maintain:
+CASE
+  WHEN REGEXP_MATCH(`Location name`, "(?i)^client a") THEN "Client A"
+  WHEN REGEXP_MATCH(`Location name`, "(?i)^client b") THEN "Client B"
+  ELSE "Unmapped"
+END
+
+-- 5-star share (reviews page)
+SUM(CASE WHEN `Review star rating` = 5
+  THEN `Reviews` ELSE 0 END) / SUM(`Reviews`)</code></pre>
+    </section>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const AUD = {int:'Internal only', cs:'Client-safe', ctrl:'Control'};
+const chip = k => `<span class="chip ${k}">${AUD[k]}</span>`;
+
+const blk = (id, span, q, title, body, opt) =>
+  `<section class="blk${opt ? ' opt' : ''}" style="grid-column:span ${span}" data-id="${id}" data-q="${q}" tabindex="0" aria-label="${id}. ${title}">
+    <span class="badge">${id}</span>
+    <header class="bh"><h3>${title}</h3><span class="tags">${opt ? '<span class="chip opt">Check fields</span>' : ''}${chip(q)}</span></header>
+    ${body}
+  </section>`;
+
+const pill = t => `<span class="pill">${t}</span>`;
+const kpi = (l, v, d) => `<div class="kpi"><span class="kl">${l}</span><strong>${v}</strong><span class="kd">${d || 'vs previous period'}</span></div>`;
+const hdr = (title, sub, pills) => `<div class="hdr"><div class="brand"><span class="logo"></span><div><strong>${title}</strong><small>${sub}</small></div></div><div class="ctrls">${pills}</div></div>`;
+
+const grid = [25, 50, 75].map(y => `<line class="gl" x1="0" x2="300" y1="${y}" y2="${y}"/>`).join('');
+const DL = ['1 Sep', '8 Sep', '15 Sep', '22 Sep', '29 Sep'];
+const lineSvg = (lines, labels) => `<svg class="chart" viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true">${grid}${lines.map(l => `<polyline class="ln ${l.c}" points="${l.p}"/>`).join('')}</svg>
+  <div class="xax">${(labels || DL).map(x => `<span>${x}</span>`).join('')}</div>`;
+const legend = items => `<div class="lg">${items.map(([c, t]) => `<span><i class="${c}"></i>${t}</span>`).join('')}</div>`;
+const L1 = "0,70 25,62 50,66 75,48 100,55 125,38 150,44 175,30 200,36 225,22 250,28 275,16 300,20";
+const L2 = "0,86 25,80 50,83 75,73 100,77 125,66 150,70 175,61 200,64 225,53 250,57 275,49 300,51";
+const L3 = "0,92 25,90 50,91 75,86 100,88 125,82 150,84 175,78 200,80 225,74 250,76 275,70 300,72";
+
+const stackedBars = (series, n, labels, w) => {
+  const step = 300 / n, bw = step - 6;
+  const rects = Array.from({length: n}, (_, i) => {
+    let y = 100;
+    return series.map((s, k) => {
+      const h = s[i % s.length] * 1.4;
+      y -= h;
+      return `<rect class="cb${k + 1}" x="${i * step + 3}" y="${y}" width="${bw}" height="${h}"/>`;
+    }).join('');
+  }).join('');
+  return `<svg class="chart" viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true">${grid}${rects}</svg><div class="xax">${labels.map(x => `<span>${x}</span>`).join('')}</div>`;
+};
+const colBars = (vals, labels) => {
+  const n = vals.length, step = 300 / n, bw = step - 6;
+  return `<svg class="chart" viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true">${grid}${vals.map((v, i) => `<rect class="cb0" x="${i * step + 3}" y="${100 - v}" width="${bw}" height="${v}"/>`).join('')}</svg><div class="xax">${labels.map(x => `<span>${x}</span>`).join('')}</div>`;
+};
+
+const hbars = rows => `<div class="hbars">${rows.map(([l, w, v]) => `<div class="hb"><span class="hl">${l}</span><span class="track"><i style="width:${w}%"></i></span><span class="hv">${v}</span></div>`).join('')}</div>`;
+const bar = w => `<span class="bar" style="width:${w}%"></span>`;
+const gt = (head, cols, rows, numFrom) => `<div class="tbl" style="--cols:${cols}"><div class="tr th">${head.map((h, i) => `<span class="${i >= numFrom ? 'r' : ''}">${h}</span>`).join('')}</div>${rows.map(r => `<div class="tr">${r.map((c, i) => `<span class="${i >= numFrom ? 'r' : ''}">${c}</span>`).join('')}</div>`).join('')}</div>`;
+const heat = (t, h) => `<span class="heat" style="--h:${h}%">${t}</span>`;
+
+const surf = [[30,32,28,34,36,31,29,33,35,30,32,37,34,31],[22,24,21,25,26,23,22,24,26,22,24,27,25,23],[14,15,13,16,17,15,14,15,16,14,15,17,16,15],[8,9,8,9,10,9,8,9,10,8,9,10,9,9]];
+const SURF_LEG = legend([['l1','Search, mobile'],['l2','Search, desktop'],['l3','Maps, mobile'],['l4','Maps, desktop']]);
+const mix = [[18,20,17,22,24,21,19,23,25,20],[10,11,9,12,13,11,10,12,13,11],[8,9,7,10,11,9,8,10,11,9],[3,3,2,4,4,3,3,4,4,3]];
+const MIX_LEG = legend([['l1','Website clicks'],['l2','Call clicks'],['l3','Directions requests'],['l4','Messages']]);
+
+const PAGES = {
+  p1: () => [
+    blk(1, 12, 'ctrl', 'Header and controls', hdr('Google Business Profile | All clients', 'Internal portfolio view', pill('Last 28 days ▾') + pill('Compare: previous period') + pill('Client: All ▾') + pill('Location group ▾'))),
+    blk(2, 12, 'int', 'Portfolio headline numbers', `<div class="kpis">${kpi('Active locations','142','')}${kpi('Total impressions','1.9M')}${kpi('Total interactions','86.4K')}${kpi('Website clicks','41.2K')}${kpi('Call clicks','18.9K')}${kpi('Directions requests','22.6K')}</div>`),
+    blk(3, 7, 'int', 'Impressions by surface, by day', stackedBars(surf, 14, ['1 Sep','8 Sep','15 Sep','22 Sep','29 Sep']) + SURF_LEG),
+    blk(4, 5, 'int', 'Interactions by type, by day', lineSvg([{c:'a',p:L1},{c:'b',p:L2},{c:'c',p:L3}]) + legend([['a','Website clicks'],['b','Call clicks'],['c','Directions requests']])),
+    blk(5, 12, 'int', 'Client scorecard',
+      gt(['Client','Locations','Impressions','Interactions','Interaction rate','Website','Calls','Directions','Avg rating'], 'minmax(100px,1.4fr) repeat(8,minmax(56px,.8fr))',
+        [[24,'612K','28.1K',4.6],[41,'488K','22.4K',4.6],[18,'301K','13.9K',4.6],[27,'266K','11.2K',4.2],[19,'148K','7.4K',5.0],[13,'85K','3.4K',4.0]].map((r, i) =>
+          [bar(80 - i * 8), r[0], r[1], r[2], heat((r[3]).toFixed(1) + '%', 20 + r[3] * 10), (r[2] === '28.1K' ? '13.4K' : '6.1K'), '2.9K', '3.4K', '★ ' + (4.8 - i * .1).toFixed(1)]), 1)),
+    blk(6, 6, 'int', 'Top locations by interactions', hbars([['Location 1',100,'3.1K'],['Location 2',88,'2.7K'],['Location 3',76,'2.4K'],['Location 4',67,'2.1K'],['Location 5',58,'1.8K'],['Location 6',50,'1.6K'],['Location 7',44,'1.4K'],['Location 8',39,'1.2K']])),
+    blk(7, 6, 'int', 'Locations needing attention',
+      gt(['Location','Client','Impressions','Interactions','Rate'], 'minmax(100px,1.4fr) minmax(70px,1fr) repeat(3,minmax(56px,.7fr))',
+        [['4.1K','46',1.1],['3.6K','52',1.4],['5.2K','81',1.6],['2.9K','49',1.7],['3.3K','58',1.8],['2.5K','47',1.9]].map((r, i) => [bar(78 - i * 7), bar(60 - i * 5), r[0], r[1], r[2].toFixed(1) + '%']), 2))
+  ].join(''),
+
+  p2: () => [
+    blk(1, 12, 'ctrl', 'Header and controls', hdr('Google Business Profile | Location performance', 'Client name', pill('Last 28 days ▾') + pill('Compare: previous period') + pill('Location: Location 1 ▾'))),
+    blk(2, 12, 'cs', 'Location headline numbers', `<div class="kpis">${kpi('Total impressions','48.2K')}${kpi('Website clicks','1.9K')}${kpi('Call clicks','840')}${kpi('Directions requests','1.1K')}${kpi('Messages','96')}${kpi('Bookings','34')}</div>`),
+    blk(3, 7, 'cs', 'Impressions and interactions, by day', lineSvg([{c:'a',p:L1},{c:'b',p:L2}]) + legend([['a','Impressions (left axis)'],['b','Total interactions (right axis)']])),
+    blk(4, 5, 'cs', 'Impressions by surface', `<div class="kpis two">${kpi('Search, mobile','21.7K')}${kpi('Search, desktop','9.8K')}${kpi('Maps, mobile','12.4K')}${kpi('Maps, desktop','4.3K')}</div>`),
+    blk(5, 7, 'cs', 'Interactions by type, by month', stackedBars(mix, 10, ['Jan','Mar','May','Jul','Oct']) + MIX_LEG),
+    blk(6, 5, 'cs', 'Top search terms',
+      gt(['Search term','Monthly impressions'], 'minmax(120px,2fr) minmax(70px,1fr)', [4200, 3100, 2300, 1700, 1300, 960, 740, 610].map((v, i) => [bar(88 - i * 8), v.toLocaleString('en-US')]), 1), true)
+  ].join(''),
+
+  p3: () => [
+    blk(1, 12, 'ctrl', 'Header and controls', hdr('Google Business Profile | Reviews', 'Client name', pill('Last 90 days ▾') + pill('Location: All ▾'))),
+    blk(2, 12, 'cs', 'Review headline numbers', `<div class="kpis">${kpi('Reviews in period','212','vs previous period')}${kpi('Rating for period','★ 4.6','vs previous period')}${kpi('5-star share','78%','vs previous period')}${kpi('1 and 2 star reviews','9','vs previous period')}</div>`, true),
+    blk(3, 7, 'cs', 'Reviews by week', colBars([40,52,46,60,58,70,64,56,62,74,68,60], ['Wk 28','Wk 31','Wk 34','Wk 37','Wk 39']), true),
+    blk(4, 5, 'cs', 'Star rating distribution', hbars([['5 stars',100,'165'],['4 stars',22,'36'],['3 stars',8,'13'],['2 stars',3,'5'],['1 star',2,'4']]), true),
+    blk(5, 12, 'cs', 'Latest reviews',
+      gt(['Rating','Comment','Date','Reply'], '70px minmax(220px,4fr) 90px 90px', [['★★★★★',86,'3 Oct','Replied'],['★★★★☆',72,'2 Oct','Replied'],['★★★★★',64,'1 Oct','No reply'],['★★☆☆☆',90,'29 Sep','No reply'],['★★★★★',58,'28 Sep','Replied'],['★★★★★',70,'27 Sep','Replied']].map(r => ['<span class="stars">' + r[0] + '</span>', bar(r[1]), r[2], r[3]]), 2), true)
+  ].join('')
+};
+
+const S = (id, name, q, chart, dim, met, note, opt) => ({id, name, q, chart, dim, met, note, opt});
+const SPECS = {
+  p1: {
+    title: 'Page 1: Portfolio (internal)',
+    intro: 'Internal only. This page lists every client\'s locations, so keep it out of client copies.',
+    items: [
+      S(1, 'Header and controls', 'ctrl', 'Date range with comparison, two drop-downs', 'Client (calculated), Location group', 'None', 'The drop-downs filter every block. If each client has its own business account or location group, use that dimension and skip the calculated Client field.'),
+      S(2, 'Portfolio headline numbers', 'int', 'Scorecard x6 with comparison range', 'None', 'Active locations (count distinct Location name), Total impressions, Total actions, Website clicks, Call clicks, Directions requests', 'Every location counts toward the Supermetrics account limit, so this card also tells you how much of the licence you are using.'),
+      S(3, 'Impressions by surface, by day', 'int', 'Stacked column chart', 'Date', 'Impressions: Search mobile, Search desktop, Maps mobile, Maps desktop', 'Google counts one impression per user per day, so these will not match Search Console.'),
+      S(4, 'Interactions by type, by day', 'int', 'Multi-line time series', 'Date', 'Website clicks, Call clicks, Directions requests', 'Add Messages or Bookings only if most clients use them.'),
+      S(5, 'Client scorecard', 'int', 'Table, one row per client, comparison range on, heatmap on Interaction rate', 'Client', 'Locations, Impressions, Total actions, Interaction rate, Website clicks, Call clicks, Directions requests, Average rating', 'Average rating is blank for a client with no reviews in the period. Hide that column if it happens often.'),
+      S(6, 'Top locations by interactions', 'int', 'Bar chart, horizontal, 10 rows', 'Location name', 'Total actions', 'Add the client name to the axis label if two clients have similar location names.'),
+      S(7, 'Locations needing attention', 'int', 'Table, 8 rows, sorted ascending by Interaction rate', 'Location name, Client', 'Impressions, Total actions, Interaction rate', 'Filter to locations above an impressions floor, for example 500, so tiny locations do not fill the list. A profile that suddenly drops to zero shows up here too.')
+    ]
+  },
+  p2: {
+    title: 'Page 2: Location detail',
+    intro: 'Client-safe once it sits in a client copy, or is filtered to one client in the internal rollup.',
+    items: [
+      S(1, 'Header and controls', 'ctrl', 'Date range with comparison, single-select Location drop-down', 'Location name', 'None', 'Default the drop-down to the first location. In a client copy the data source holds only that client\'s locations.'),
+      S(2, 'Location headline numbers', 'cs', 'Scorecard x6 with comparison range', 'None', 'Total impressions, Website clicks, Call clicks, Directions requests, Messages, Bookings', 'Remove Messages and Bookings for clients whose locations never use them, so the page does not show a row of zeros.'),
+      S(3, 'Impressions and interactions, by day', 'cs', 'Combo chart, dual axis', 'Date', 'Total impressions (left), Total actions (right)', 'Use weekly granularity for ranges over 60 days.'),
+      S(4, 'Impressions by surface', 'cs', 'Scorecard x4 in a 2 x 2 grid', 'None', 'Impressions: Search mobile, Search desktop, Maps mobile, Maps desktop', 'Scorecards avoid the one-dimension limit on bar charts. Add sparklines if you want a trend on each.'),
+      S(5, 'Interactions by type, by month', 'cs', 'Stacked column chart', 'Year Month', 'Website clicks, Call clicks, Directions requests, Messages', 'Pull at least 6 months so the pattern shows. The connector has no known limit on how far back it can go.'),
+      S(6, 'Top search terms', 'cs', 'Table, 8 to 10 rows', 'Search term', 'Monthly search impressions', 'Monthly data only, usually available after the month ends, with low-volume terms hidden by Google. Set the table to a single month.', true)
+    ]
+  },
+  p3: {
+    title: 'Page 3: Reviews',
+    intro: 'Client-safe. Every block here depends on review fields, so confirm they exist in your connection before building.',
+    items: [
+      S(1, 'Header and controls', 'ctrl', 'Date range, Location drop-down (multi-select)', 'Location name', 'None', 'Default to 90 days so the rating has enough reviews behind it.'),
+      S(2, 'Review headline numbers', 'cs', 'Scorecard x4 with comparison range', 'None', 'Reviews, Average rating, 5-star share (calculated), 1 and 2 star reviews (calculated)', 'Average rating returns nothing when the period has no reviews, so label it "rating for period".', true),
+      S(3, 'Reviews by week', 'cs', 'Column chart', 'Year Week', 'Reviews', 'Shows whether review requests are working. Compare with a campaign or in-store sign-up date.', true),
+      S(4, 'Star rating distribution', 'cs', 'Bar chart, horizontal, 5 rows', 'Review star rating', 'Reviews', 'Sort from 5 stars down. Colour the 1 and 2 star bars differently if you want them to stand out.', true),
+      S(5, 'Latest reviews', 'cs', 'Table, 8 rows, sorted by date descending', 'Review date, Star rating, Comment, Reply status', 'None', 'Check which review fields your connection returns, including the comment and reply status. Drop the table if comments are missing.', true)
+    ]
+  }
+};
+
+const specHtml = k => {
+  const s = SPECS[k];
+  return `<div class="sp-h"><h2>${s.title}</h2><p>${s.intro}</p></div>` + s.items.map(i =>
+    `<article class="sr" data-id="${i.id}" tabindex="0"><span class="badge">${i.id}</span><div>
+      <div class="srh"><strong>${i.name}</strong><span class="tags">${i.opt ? '<span class="chip opt">Check fields</span>' : ''}${chip(i.q)}</span></div>
+      <dl><dt>Chart</dt><dd>${i.chart}</dd><dt>Dimension</dt><dd>${i.dim}</dd><dt>Metrics</dt><dd>${i.met}</dd><dt>Note</dt><dd>${i.note}</dd></dl>
+    </div></article>`).join('');
+};
+
+let cur = 'p1';
+function render() {
+  $('#canvas').innerHTML = PAGES[cur]();
+  $('#spec').innerHTML = specHtml(cur);
+  document.querySelectorAll('#tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.k === cur)));
+}
+function select(id) {
+  document.querySelectorAll('[data-id].active').forEach(e => e.classList.remove('active'));
+  document.querySelectorAll(`#canvas [data-id="${id}"], #spec [data-id="${id}"]`).forEach(e => e.classList.add('active'));
+  if (window.matchMedia('(min-width:1081px)').matches) {
+    const row = document.querySelector(`#spec [data-id="${id}"]`);
+    if (row) row.scrollIntoView({block: 'nearest'});
+  }
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('#tabs button');
+  if (t) { cur = t.dataset.k; render(); return; }
+  const el = e.target.closest('#canvas [data-id], #spec [data-id]');
+  if (el) select(el.dataset.id);
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const el = e.target.closest && e.target.closest('#canvas [data-id], #spec [data-id]');
+  if (el) { e.preventDefault(); select(el.dataset.id); }
+});
+render();
+</script>
+</body>
+</html>

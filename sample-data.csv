@@ -1,0 +1,9 @@
+Account ID,Account name,Location name,Address region code,Postal code,Total views,Views on maps (Desktop),Views on maps (Mobile),Views on Search (Desktop),Views on Search (Mobile),Total actions,Website visits,Phone calls,Directions requests,Monthly search impressions,Reviews,Avg. review star rating,Review time to respond (minutes),Total review count,Avg. overall star rating
+1,Cable Melbourne,Cable Demo Store 1,AU,3000,4000,40,400,900,2660,112,40,12,60,2500,1,4,1500,12,4.2
+1,Cable Melbourne,Cable Demo Store 2,AU,3122,2200,20,100,600,1480,78,30,8,40,1400,,,,5,4.8
+1,Cable Melbourne,Cable Demo Store 3 (no data),AU,2067,,,,,,,,,,,,,,,
+2,Baby Bunting,Baby Bunting Demo Store A,AU,4006,40000,300,20000,2000,17700,1600,400,300,900,15000,3,3.7,9000,150,3.9
+2,Baby Bunting,Baby Bunting Demo Store B,NZ,1060,10000,100,6000,500,3400,400,120,60,220,4000,1,5,,40,4.1
+3,Converse,Converse Demo Store C,AU,3000,10000,50,700,1200,8050,200,100,20,80,6000,,,,30,4
+4,GAZMAN,GAZMAN Demo Store D,AU,3000,4000,60,600,800,2540,205,80,25,100,2000,,,,18,4.5
+4,GAZMAN,GAZMAN Demo Head Office,AU,3144,500,10,90,100,300,115,5,10,100,300,,,,2,5

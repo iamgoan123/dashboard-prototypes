@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pinterest organic dashboard wireframe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E8EBEE; --paper:#FFFFFF; --ink:#1B2127; --muted:#5B6672; --line:#C6CCD3;
+  --fill:#F4F5F7; --ph:#D6DBE0; --ph2:#B7BEC6;
+  --profile:#17635F; --profile-bg:#DCEDEB;
+  --pins:#B3121F; --pins-bg:#F8E1E3;
+  --ctrl:#455260; --ctrl-bg:#E3E7EB;
+  --focus:#2B5CE6;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#13171B; --paper:#1C2227; --ink:#E7EAED; --muted:#9AA5AF; --line:#38414A;
+    --fill:#232A30; --ph:#303941; --ph2:#47525D;
+    --profile:#6CC4BC; --profile-bg:#17302E;
+    --pins:#FF8A93; --pins-bg:#3A1A1E;
+    --ctrl:#AAB4BE; --ctrl-bg:#2A3239;
+    --focus:#8FA9FF;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#13171B; --paper:#1C2227; --ink:#E7EAED; --muted:#9AA5AF; --line:#38414A;
+  --fill:#232A30; --ph:#303941; --ph2:#47525D;
+  --profile:#6CC4BC; --profile-bg:#17302E;
+  --pins:#FF8A93; --pins-bg:#3A1A1E;
+  --ctrl:#AAB4BE; --ctrl-bg:#2A3239;
+  --focus:#8FA9FF;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Schibsted Grotesk',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;line-height:1.45;-webkit-text-size-adjust:100%}
+.wrap{max-width:1360px;margin:0 auto;padding:22px 18px 40px}
+h1{font-size:24px;line-height:1.2;margin:0 0 6px;font-weight:700}
+h2{font-size:15px;margin:0 0 4px;font-weight:650}
+h3{font-size:13px;margin:0;font-weight:650}
+p{margin:0}
+.sub{color:var(--muted);font-size:14px;max-width:78ch}
+.sub .chip{margin:0 2px}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+.chip{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.chip.profile{color:var(--profile);background:var(--profile-bg)}
+.chip.pins{color:var(--pins);background:var(--pins-bg)}
+.chip.ctrl,.chip.opt{color:var(--ctrl);background:var(--ctrl-bg)}
+
+.tabs{display:flex;gap:4px;margin:18px 0 14px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tabs button{appearance:none;border:0;background:none;color:var(--muted);font:inherit;font-size:14px;font-weight:600;padding:10px 14px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+
+.stage{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:start}
+@media (max-width:1080px){.stage{grid-template-columns:minmax(0,1fr)}.spec{position:static!important;max-height:none!important}}
+
+.canvaswrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--paper)}
+.canvas{min-width:780px;padding:20px 18px 18px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px;background:var(--paper)}
+
+.blk{position:relative;min-width:0;border:1px solid var(--line);border-left:4px solid var(--accent,var(--line));border-radius:4px;padding:10px 12px 12px;background:var(--fill);cursor:pointer}
+.blk[data-q="profile"]{--accent:var(--profile)}
+.blk[data-q="pins"]{--accent:var(--pins)}
+.blk[data-q="ctrl"]{--accent:var(--ctrl)}
+.blk.opt{border-style:dashed;border-left-style:solid}
+.blk.active{outline:2px solid var(--focus);outline-offset:2px}
+.badge{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--paper);font-size:12px;font-weight:700;flex:none}
+.blk>.badge{position:absolute;top:-10px;left:-13px}
+.bh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.tags{display:flex;gap:4px}
+
+.hdr{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px}
+.brand strong{display:block;font-size:15px}
+.brand small{display:block;color:var(--muted);font-size:12px}
+.logo{width:34px;height:34px;border-radius:50%;background:var(--ph2)}
+.ctrls{display:flex;gap:8px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:5px 12px;font-size:12px}
+
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:8px}
+.kpis.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.kpis.stack{grid-template-columns:minmax(0,1fr)}
+.kpi{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;gap:1px}
+.kl{font-size:11px;color:var(--muted)}
+.kpi strong{font-size:22px;line-height:1.15;font-weight:700}
+.kd{font-size:11px;color:var(--muted)}
+
+.chart{display:block;width:100%;height:130px;background:var(--paper);border:1px solid var(--line);border-radius:4px}
+.chart.sc{height:200px}
+.gl{stroke:var(--ph);stroke-width:1;vector-effect:non-scaling-stroke}
+.ln{fill:none;stroke-width:2;vector-effect:non-scaling-stroke}
+.ln.a{stroke:var(--accent)}
+.ln.b{stroke:var(--ph2)}
+.ln.c{stroke:var(--muted);stroke-dasharray:4 3}
+.xax{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px}
+.lg{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:6px}
+.lg span{display:inline-flex;align-items:center;gap:5px}
+.lg i{display:inline-block;width:16px;height:0;border-top:2px solid}
+.lg i.a{border-color:var(--accent)} .lg i.b{border-color:var(--ph2)} .lg i.c{border-color:var(--muted);border-top-style:dashed}
+
+.hbars{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:6px 10px}
+.hb{display:grid;grid-template-columns:minmax(64px,.9fr) 3fr 42px;gap:8px;align-items:center;font-size:11px;margin:5px 0}
+.hl{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track{display:block;height:11px;background:var(--fill);border-radius:2px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--accent);opacity:.6}
+.hv{text-align:right}
+
+.sc .ax{stroke:var(--ph2);stroke-width:1}
+.sc .ax.d{stroke-dasharray:3 3;stroke:var(--ph)}
+.sc circle{fill:var(--accent);fill-opacity:.28;stroke:var(--accent);stroke-width:1}
+.sv{font-size:8px;fill:var(--muted)}
+
+.hm{display:grid;grid-template-columns:38px repeat(3,minmax(0,1fr));gap:3px;font-size:11px;background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:8px}
+.hm .hc{font-size:10px;color:var(--muted);text-align:center}
+.hm .hr{color:var(--muted);align-self:center}
+.hm .c{position:relative;height:19px;border-radius:2px;background:var(--fill);overflow:hidden}
+.hm .c i{position:absolute;inset:0;background:var(--accent)}
+
+.tbl{background:var(--paper);border:1px solid var(--line);border-radius:4px;overflow:hidden;font-size:11px}
+.tr{display:grid;grid-template-columns:var(--cols);gap:10px;align-items:center;padding:6px 10px;border-top:1px solid var(--line)}
+.tr.th{border-top:0;background:var(--fill);color:var(--muted);font-weight:600}
+.r{text-align:right}
+.rk{color:var(--muted)}
+.thumb{display:block;width:30px;height:30px;border-radius:3px;background:var(--ph)}
+.bar{display:block;height:7px;border-radius:4px;background:var(--ph)}
+.db{position:relative;display:block;height:18px;line-height:18px}
+.db i{position:absolute;left:0;top:1px;bottom:1px;background:var(--accent);opacity:.25;border-radius:2px}
+.db em{position:relative;font-style:normal;padding-left:5px}
+.heat{display:block;text-align:right;padding:2px 6px;border-radius:2px;background:color-mix(in srgb,var(--accent) var(--h),transparent)}
+
+/* spec panel */
+.spec{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;border:1px solid var(--line);border-radius:6px;background:var(--paper)}
+.sp-h{padding:14px 16px}
+.sp-h p{font-size:12.5px;color:var(--muted)}
+.sr{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;padding:12px 16px;border-top:1px solid var(--line);cursor:pointer}
+.sr.active{background:var(--fill);box-shadow:inset 3px 0 0 var(--focus)}
+.srh{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.srh strong{font-size:13px}
+.sr dl{margin:8px 0 0;display:grid;grid-template-columns:72px minmax(0,1fr);gap:4px 8px;font-size:12px}
+.sr dt{color:var(--muted)}
+.sr dd{margin:0}
+
+/* build notes */
+.build{margin-top:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:16px 18px}
+.card ol,.card ul{margin:8px 0 0;padding-left:20px;font-size:13.5px}
+.card li{margin:6px 0}
+pre{margin:10px 0 0;padding:10px 12px;background:var(--fill);border:1px solid var(--line);border-radius:4px;font-size:12px;overflow-x:auto;line-height:1.5}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px}
+.foot{margin-top:18px;font-size:12.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Pinterest organic dashboard wireframe</h1>
+  <p class="sub">Two sources feed the report: the <span class="chip profile">Profile query</span> for account-level trends and the <span class="chip pins">Top pins query</span> for pin-level ranking. Click any block or spec row to link them. Numbers on the canvas are placeholders.</p>
+
+  <div class="tabs" role="tablist" id="tabs">
+    <button role="tab" data-k="p1" aria-selected="true">Page 1: Profile performance</button>
+    <button role="tab" data-k="p2" aria-selected="false">Page 2: Top pins</button>
+    <button role="tab" data-k="p3" aria-selected="false">One-pager</button>
+  </div>
+
+  <div class="stage">
+    <div class="canvaswrap"><div class="canvas" id="canvas"></div></div>
+    <aside class="spec" id="spec" aria-label="Component spec"></aside>
+  </div>
+
+  <div class="build">
+    <section class="card">
+      <h2>Build order in Looker Studio</h2>
+      <ol>
+        <li>Add two Supermetrics data sources on the same Pinterest account, one on the Profile query and one on the Top pins query. Name them so they are easy to tell apart in the field picker.</li>
+        <li>Create the date range control once and make it report-level so both pages follow it. Set the default to the last 30 days.</li>
+        <li>Build the scorecards first with a comparison date range turned on, then the trend charts, then the pin table.</li>
+        <li>On the Top pins source, add the Rank by parameter and the calculated field below, then use that field in the Top 10 bar chart.</li>
+        <li>Set the pin thumbnail field type to Image and the destination field to URL so the table shows pictures and clickable links.</li>
+      </ol>
+      <pre><code>-- Parameter: rank_by (text, allowed values:
+--   Impressions, Saves, Pin clicks, Outbound clicks)
+-- Calculated field: Rank metric
+CASE
+  WHEN rank_by = "Saves" THEN SUM(`Saves`)
+  WHEN rank_by = "Pin clicks" THEN SUM(`Pin clicks`)
+  WHEN rank_by = "Outbound clicks" THEN SUM(`Outbound clicks`)
+  ELSE SUM(`Impressions`)
+END
+
+-- Rates, if the query does not return them
+Engagement rate    = SUM(`Engagements`) / SUM(`Impressions`)
+Pin click rate     = SUM(`Pin clicks`) / SUM(`Impressions`)
+Save rate          = SUM(`Saves`) / SUM(`Impressions`)
+Outbound click rate = SUM(`Outbound clicks`) / SUM(`Impressions`)</code></pre>
+    </section>
+    <section class="card">
+      <h2>Check before you build</h2>
+      <ul>
+        <li>Field names above follow the Supermetrics Pinterest Organic field list. Confirm the exact names, and which fields each query exposes, in the field picker. Followers, audience, video and the pin image URL are the ones most likely to differ by account.</li>
+        <li>The Top pins query returns a capped list of pins, so its totals describe those pins only. Label them as top pin totals, not account totals.</li>
+        <li>Pinterest limits how far back its data goes. If you need year-on-year views, schedule the Profile query into BigQuery or Sheets and report from there.</li>
+        <li>Profile and Top pins do not share a join key, so keep them on separate charts instead of blending them. A "top 10 share of impressions" card is a later add-on.</li>
+      </ul>
+    </section>
+  </div>
+  <p class="foot">Suggested Looker Studio page size: 1200 wide, 12 column grid, 14 px gutters, to match the canvas above.</p>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const Q = {profile:'Profile query', pins:'Top pins query', ctrl:'Control'};
+const chip = k => `<span class="chip ${k}">${Q[k]}</span>`;
+
+const blk = (id, span, q, title, body, optional) =>
+  `<section class="blk${optional ? ' opt' : ''}" style="grid-column:span ${span}" data-id="${id}" data-q="${q}" tabindex="0" aria-label="${id}. ${title}">
+    <span class="badge">${id}</span>
+    <header class="bh"><h3>${title}</h3><span class="tags">${optional ? '<span class="chip opt">Optional</span>' : ''}${chip(q)}</span></header>
+    ${body}
+  </section>`;
+
+const pill = t => `<span class="pill">${t}</span>`;
+const kpi = (l, v, d, dn) => `<div class="kpi"><span class="kl">${l}</span><strong>${v}</strong><span class="kd">${dn ? '▼' : '▲'} ${d}</span></div>`;
+const hdr = extra => `<div class="hdr"><div class="brand"><span class="logo"></span><div><strong>Pinterest organic</strong><small>Brand name</small></div></div><div class="ctrls">${pill('Last 30 days ▾')}${pill('Compare: previous period')}${extra || ''}</div></div>`;
+
+const grid = [25, 50, 75].map(y => `<line class="gl" x1="0" x2="300" y1="${y}" y2="${y}"/>`).join('');
+const lineSvg = lines => `<svg class="chart" viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true">${grid}${lines.map(l => `<polyline class="ln ${l.c}" points="${l.p}"/>`).join('')}</svg>
+  <div class="xax"><span>1 Sep</span><span>8 Sep</span><span>15 Sep</span><span>22 Sep</span><span>29 Sep</span></div>`;
+const legend = items => `<div class="lg">${items.map(([c, t]) => `<span><i class="${c}"></i>${t}</span>`).join('')}</div>`;
+
+const L1 = "0,70 25,62 50,66 75,48 100,55 125,38 150,44 175,30 200,36 225,22 250,28 275,16 300,20";
+const L2 = "0,86 25,80 50,83 75,73 100,77 125,66 150,70 175,61 200,64 225,53 250,57 275,49 300,51";
+const L3 = "0,93 25,91 50,92 75,87 100,89 125,83 150,85 175,79 200,81 225,75 250,77 275,71 300,73";
+
+const hbars = rows => `<div class="hbars">${rows.map(([l, w, v]) => `<div class="hb"><span class="hl">${l}</span><span class="track"><i style="width:${w}%"></i></span><span class="hv">${v}</span></div>`).join('')}</div>`;
+
+const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const hmData = [[.45,.4,.35],[.55,.5,.45],[.7,.75,.6],[.5,.45,.4],[.8,.85,.9],[1,.95,1],[.9,.8,.85]];
+const heat = `<div class="hm"><span></span><span class="hc">Impressions</span><span class="hc">Saves</span><span class="hc">Outbound clicks</span>${days.map((d, r) => `<span class="hr">${d}</span>${hmData[r].map(v => `<span class="c"><i style="opacity:${v}"></i></span>`).join('')}`).join('')}</div>`;
+
+const pts = [[55,32,8],[82,48,6],[120,88,7],[150,40,15],[195,72,8],[235,30,11],[95,108,6],[265,96,7],[135,112,5],[215,104,6],[70,86,6],[180,52,9]];
+const scatter = `<svg class="chart sc" viewBox="0 0 300 140" aria-hidden="true">
+  <line class="ax" x1="30" y1="10" x2="30" y2="120"/><line class="ax" x1="30" y1="120" x2="290" y2="120"/>
+  <line class="ax d" x1="160" y1="10" x2="160" y2="120"/><line class="ax d" x1="30" y1="65" x2="290" y2="65"/>
+  ${pts.map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}"/>`).join('')}
+  <text class="sv" x="36" y="20">High engagement, low reach</text>
+  <text class="sv" x="290" y="134" text-anchor="end">Impressions</text>
+  <text class="sv" transform="rotate(-90)" x="-65" y="12" text-anchor="middle">Engagement rate</text>
+</svg>
+<div class="lg"><span>Each bubble is a pin. Bubble size = Saves.</span></div>`;
+
+const IMP = ['48.2K','41.7K','33.0K','27.4K','22.9K','19.5K','16.1K','13.8K','11.9K','10.2K'];
+const IMPW = [100,86,68,57,48,40,33,29,25,21];
+const SAV = ['1.9K','1.4K','1.1K','860','740','610','520','430','390','340'];
+const PC = ['1.2K','980','870','640','590','410','380','290','260','230'];
+const OC = ['610','540','470','330','300','210','190','150','140','120'];
+const ER = ['5.1%','4.6%','4.9%','3.8%','4.2%','3.5%','3.9%','3.1%','3.3%','2.9%'];
+const ERH = [70,60,66,45,55,38,48,30,36,25];
+
+const pinTable = n => {
+  const rows = Array.from({length: n}, (_, i) => `<div class="tr">
+    <span class="rk">${i + 1}</span><span class="thumb"></span>
+    <span class="bar" style="width:${82 - i * 4}%"></span><span class="bar" style="width:${70 - i * 3}%"></span>
+    <span class="db"><i style="width:${IMPW[i]}%"></i><em>${IMP[i]}</em></span>
+    <span class="r">${SAV[i]}</span><span class="r">${PC[i]}</span><span class="r">${OC[i]}</span>
+    <span class="r"><span class="heat" style="--h:${ERH[i]}%">${ER[i]}</span></span></div>`).join('');
+  return `<div class="tbl" style="--cols:20px 30px minmax(90px,1.5fr) minmax(70px,1fr) minmax(86px,1.1fr) repeat(3,minmax(44px,.6fr)) minmax(54px,.7fr)">
+    <div class="tr th"><span>#</span><span>Pin</span><span>Title</span><span>Destination</span><span>Impressions</span><span class="r">Saves</span><span class="r">Pin clicks</span><span class="r">Outbound</span><span class="r">Eng. rate</span></div>${rows}</div>`;
+};
+
+const PAGES = {
+  p1: () => [
+    blk(1, 12, 'ctrl', 'Header and controls', hdr()),
+    blk(2, 12, 'profile', 'Headline numbers', `<div class="kpis">${kpi('Impressions','412K','12%')}${kpi('Engagements','18.6K','8%')}${kpi('Saves','6.1K','15%')}${kpi('Pin clicks','9.4K','4%')}${kpi('Outbound clicks','3.2K','9%')}${kpi('Engagement rate','4.5%','0.3 pt',1)}</div>`),
+    blk(3, 8, 'profile', 'Impressions and engagements by day', lineSvg([{c:'a',p:L1},{c:'b',p:L2}]) + legend([['a','Impressions (left axis)'],['b','Engagements (right axis)']])),
+    blk(4, 4, 'profile', 'Interaction rates', `<div class="kpis two">${kpi('Engagement rate','4.5%','0.3 pt',1)}${kpi('Pin click rate','2.3%','0.1 pt')}${kpi('Save rate','1.5%','0.2 pt')}${kpi('Outbound rate','0.8%','0.1 pt',1)}</div>`),
+    blk(5, 8, 'profile', 'Saves, pin clicks and outbound clicks by day', lineSvg([{c:'a',p:L1},{c:'b',p:L2},{c:'c',p:L3}]) + legend([['a','Saves'],['b','Pin clicks'],['c','Outbound clicks']])),
+    blk(6, 4, 'profile', 'Audience', `<div class="kpis stack">${kpi('Total audience','286K','6%')}${kpi('Engaged audience','21.4K','3%')}${kpi('Followers','8.9K','1%')}</div>`),
+    blk(7, 6, 'profile', 'Weekday pattern', heat),
+    blk(8, 6, 'profile', 'Video performance', `<div class="kpis">${kpi('Video views','54K','10%')}${kpi('Avg watch time','0:09','1 s')}${kpi('Video saves','1.2K','7%')}</div>`, true)
+  ].join(''),
+
+  p2: () => [
+    blk(1, 12, 'ctrl', 'Header and controls', hdr(pill('Rank by: Impressions ▾') + pill('Pin format: All ▾'))),
+    blk(2, 12, 'pins', 'Top pin totals', `<div class="kpis">${kpi('Impressions','196K','11%')}${kpi('Saves','7.9K','14%')}${kpi('Pin clicks','5.7K','3%')}${kpi('Outbound clicks','2.2K','8%')}</div>`),
+    blk(3, 5, 'pins', 'Top 10 pins by selected metric', hbars(IMP.map((v, i) => ['Pin title ' + (i + 1), IMPW[i], v]))),
+    blk(4, 7, 'pins', 'Reach vs engagement', scatter),
+    blk(5, 12, 'pins', 'Pin leaderboard', pinTable(8))
+  ].join(''),
+
+  p3: () => [
+    blk(1, 12, 'ctrl', 'Header and controls', hdr()),
+    blk(2, 12, 'profile', 'Headline numbers', `<div class="kpis">${kpi('Impressions','412K','12%')}${kpi('Engagements','18.6K','8%')}${kpi('Saves','6.1K','15%')}${kpi('Pin clicks','9.4K','4%')}${kpi('Outbound clicks','3.2K','9%')}${kpi('Engagement rate','4.5%','0.3 pt',1)}</div>`),
+    blk(3, 7, 'profile', 'Impressions and engagements by day', lineSvg([{c:'a',p:L1},{c:'b',p:L2}]) + legend([['a','Impressions (left axis)'],['b','Engagements (right axis)']])),
+    blk(4, 5, 'profile', 'Interaction rates', `<div class="kpis two">${kpi('Engagement rate','4.5%','0.3 pt',1)}${kpi('Pin click rate','2.3%','0.1 pt')}${kpi('Save rate','1.5%','0.2 pt')}${kpi('Outbound rate','0.8%','0.1 pt',1)}</div>`),
+    blk(5, 12, 'pins', 'Top 5 pins', pinTable(5))
+  ].join('')
+};
+
+const S = (id, name, q, chart, dim, met, note) => ({id, name, q, chart, dim, met, note});
+const SPECS = {
+  p1: {
+    title: 'Page 1: Profile performance',
+    intro: 'Every block except the controls uses the Profile source.',
+    items: [
+      S(1, 'Header and controls', 'ctrl', 'Text, logo, date range control', 'None', 'None', 'Make the date range report-level so both pages share it. Add an account drop-down only if the connection holds more than one Pinterest profile.'),
+      S(2, 'Headline numbers', 'profile', 'Scorecard x6 with comparison range', 'None', 'Impressions, Engagements, Saves, Pin clicks, Outbound clicks, Engagement rate', 'Compare to the previous period. Use a calculated rate if the query does not return Engagement rate.'),
+      S(3, 'Impressions and engagements by day', 'profile', 'Combo chart, two lines, dual axis', 'Date', 'Impressions (left), Engagements (right)', 'Switch to weekly granularity when the range is longer than 60 days.'),
+      S(4, 'Interaction rates', 'profile', 'Scorecard x4 with sparkline', 'None', 'Engagement rate, Pin click rate, Save rate, Outbound click rate', 'Calculated fields over Impressions. Shows where attention drops from view to click.'),
+      S(5, 'Saves, pin clicks and outbound clicks by day', 'profile', 'Time series, multi-line', 'Date', 'Saves, Pin clicks, Outbound clicks', 'Outbound clicks is the site-traffic signal and the one to line up with GA4 sessions later.'),
+      S(6, 'Audience', 'profile', 'Scorecard x3', 'None', 'Total audience, Engaged audience, Followers', 'Drop any card the query does not expose for this account.'),
+      S(7, 'Weekday pattern', 'profile', 'Pivot table with heatmap', 'Day of week (calculated from Date)', 'Impressions, Saves, Outbound clicks', 'Use it to pick posting days. Set heatmap on each metric column.'),
+      S(8, 'Video performance', 'profile', 'Scorecard x3', 'None', 'Video views, Average watch time, Video saves', 'Optional. Delete the block if the account does not post video pins.')
+    ]
+  },
+  p2: {
+    title: 'Page 2: Top pins',
+    intro: 'Every block except the controls uses the Top pins source.',
+    items: [
+      S(1, 'Header and controls', 'ctrl', 'Date range control, two drop-downs', 'None', 'None', 'Rank by is a parameter (see the formula below the canvas). Pin format filter only if the query returns a format field.'),
+      S(2, 'Top pin totals', 'pins', 'Scorecard x4', 'None', 'Impressions, Saves, Pin clicks, Outbound clicks', 'These add up the pins the query returns, not the whole account. Keep the label as is.'),
+      S(3, 'Top 10 pins by selected metric', 'pins', 'Bar chart, horizontal, sorted descending, 10 rows', 'Pin title (or Pin ID)', 'Rank metric (calculated field)', 'Trim long titles in the axis label so the bars stay readable.'),
+      S(4, 'Reach vs engagement', 'pins', 'Bubble chart', 'Pin ID', 'X: Impressions, Y: Engagement rate, Size: Saves', 'Pins in the upper left earn engagement on little reach. Good candidates to re-pin or promote.'),
+      S(5, 'Pin leaderboard', 'pins', 'Table, 15 to 25 rows, data bars and heatmap', 'Pin image, Pin title, Destination link', 'Impressions, Saves, Pin clicks, Outbound clicks, Engagement rate', 'Image field type for the thumbnail, URL type for the destination. Data bars on Impressions, heatmap on Engagement rate.')
+    ]
+  },
+  p3: {
+    title: 'One-pager',
+    intro: 'Blocks 1 to 4 use the Profile source and block 5 uses Top pins. Same fields as the two-page version.',
+    items: [
+      S(1, 'Header and controls', 'ctrl', 'Text, logo, date range control', 'None', 'None', 'The report-level date range drives both sources.'),
+      S(2, 'Headline numbers', 'profile', 'Scorecard x6 with comparison range', 'None', 'Impressions, Engagements, Saves, Pin clicks, Outbound clicks, Engagement rate', 'Same setup as page 1.'),
+      S(3, 'Impressions and engagements by day', 'profile', 'Combo chart, two lines, dual axis', 'Date', 'Impressions (left), Engagements (right)', 'Keep to two series on the one-pager.'),
+      S(4, 'Interaction rates', 'profile', 'Scorecard x4 in a 2 x 2 grid', 'None', 'Engagement rate, Pin click rate, Save rate, Outbound click rate', 'Calculated fields over Impressions.'),
+      S(5, 'Top 5 pins', 'pins', 'Table, 5 rows, sorted by Impressions', 'Pin image, Pin title, Destination link', 'Impressions, Saves, Pin clicks, Outbound clicks, Engagement rate', 'Limit rows to 5. Add the Rank by drop-down from page 2 if you want it switchable.')
+    ]
+  }
+};
+
+const specHtml = k => {
+  const s = SPECS[k];
+  return `<div class="sp-h"><h2>${s.title}</h2><p>${s.intro}</p></div>` + s.items.map(i =>
+    `<article class="sr" data-id="${i.id}" tabindex="0"><span class="badge">${i.id}</span><div>
+      <div class="srh"><strong>${i.name}</strong>${chip(i.q)}</div>
+      <dl><dt>Chart</dt><dd>${i.chart}</dd><dt>Dimension</dt><dd>${i.dim}</dd><dt>Metrics</dt><dd>${i.met}</dd><dt>Note</dt><dd>${i.note}</dd></dl>
+    </div></article>`).join('');
+};
+
+let cur = 'p1';
+function render() {
+  $('#canvas').innerHTML = PAGES[cur]();
+  $('#spec').innerHTML = specHtml(cur);
+  document.querySelectorAll('#tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.k === cur)));
+}
+function select(id) {
+  document.querySelectorAll('[data-id].active').forEach(e => e.classList.remove('active'));
+  document.querySelectorAll(`#canvas [data-id="${id}"], #spec [data-id="${id}"]`).forEach(e => e.classList.add('active'));
+  if (window.matchMedia('(min-width:1081px)').matches) {
+    const row = document.querySelector(`#spec [data-id="${id}"]`);
+    if (row) row.scrollIntoView({block: 'nearest'});
+  }
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('#tabs button');
+  if (t) { cur = t.dataset.k; render(); return; }
+  const el = e.target.closest('#canvas [data-id], #spec [data-id]');
+  if (el) select(el.dataset.id);
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const el = e.target.closest && e.target.closest('#canvas [data-id], #spec [data-id]');
+  if (el) { e.preventDefault(); select(el.dataset.id); }
+});
+render();
+</script>
+</body>
+</html>

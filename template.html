@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Google Business Profile: all brands</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF0F2; --paper:#FFFFFF; --ink:#1A2026; --muted:#5E6A75; --line:#D3D8DD; --fill:#F5F6F8; --soft:#E6E9ED;
+  --bb:#12857A; --cb:#2748D8; --cv:#C9780A; --gz:#8A3F86;
+  --accent:#2748D8; --warn:#B3261E; --good:#1E7B4F;
+  --focus:#2748D8;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101417; --paper:#191F24; --ink:#E8ECEF; --muted:#9AA6B0; --line:#333C44; --fill:#20272D; --soft:#2A333B;
+    --bb:#45C2B4; --cb:#8CA2FF; --cv:#F0AE55; --gz:#D58BD0;
+    --accent:#8CA2FF; --warn:#FF8A80; --good:#6FD3A0; --focus:#8CA2FF;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101417; --paper:#191F24; --ink:#E8ECEF; --muted:#9AA6B0; --line:#333C44; --fill:#20272D; --soft:#2A333B;
+  --bb:#45C2B4; --cb:#8CA2FF; --cv:#F0AE55; --gz:#D58BD0;
+  --accent:#8CA2FF; --warn:#FF8A80; --good:#6FD3A0; --focus:#8CA2FF;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Schibsted Grotesk',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;line-height:1.45;-webkit-text-size-adjust:100%;font-variant-numeric:tabular-nums}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.wrap{max-width:1320px;margin:0 auto;padding:18px 18px 48px}
+h1{font-size:22px;line-height:1.2;margin:0;font-weight:700}
+h2{font-size:15px;margin:0 0 2px;font-weight:650}
+h3{font-size:13px;margin:0;font-weight:650}
+.sub{color:var(--muted);font-size:13px;margin-top:4px}
+.muted{color:var(--muted)}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:10px 0 8px;margin:0 -2px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:99px;background:var(--paper);overflow:hidden;flex-wrap:wrap}
+.seg button{appearance:none;border:0;background:none;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);display:inline-flex;align-items:center;gap:7px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;background:var(--c,var(--muted))}
+.ctl{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+select,input[type=search]{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:6px 10px;font-size:13px}
+input[type=checkbox]{accent-color:var(--ink);width:16px;height:16px}
+
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:8px 0 16px;overflow-x:auto}
+.tabs button{appearance:none;border:0;background:none;padding:10px 14px;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+
+.grid{display:grid;gap:14px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:1000px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:760px){.g2{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 16px;min-width:0}
+.card .hd{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.card .hd p{margin:0;font-size:12px;color:var(--muted)}
+.kpi .l{font-size:12px;color:var(--muted)}
+.kpi .v{font-size:26px;font-weight:700;line-height:1.15;margin-top:2px}
+.kpi .s{font-size:12px;color:var(--muted);margin-top:2px}
+@media (max-width:520px){.kpi .v{font-size:21px}.wrap{padding:14px 12px 40px}}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{padding:8px 10px;text-align:right;border-top:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--muted);font-weight:600;font-size:12px;border-top:0;position:sticky;top:0;background:var(--paper)}
+th.s{cursor:pointer;user-select:none}
+th.s:hover{color:var(--ink)}
+tr.click{cursor:pointer}
+tr.click:hover td{background:var(--fill)}
+tr.on td{background:var(--fill);box-shadow:inset 0 0 0 0 transparent}
+td.name{max-width:260px;overflow:hidden;text-overflow:ellipsis}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:1px 7px;border-radius:99px;background:var(--soft);color:var(--muted);margin-left:6px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600}
+.cell-bar{position:relative;display:block;min-width:90px;height:20px;line-height:20px;text-align:right}
+.cell-bar i{position:absolute;left:0;top:3px;bottom:3px;border-radius:3px;background:var(--c,var(--accent));opacity:.22}
+.cell-bar span{position:relative;padding-right:2px}
+.heat{display:inline-block;min-width:54px;padding:2px 8px;border-radius:4px;text-align:right;background:color-mix(in srgb,var(--accent) var(--h),transparent)}
+
+.bl{display:grid;gap:7px}
+.bi{display:grid;grid-template-columns:minmax(80px,230px) 1fr minmax(70px,max-content);gap:10px;align-items:center;font-size:12.5px}
+.bi.click{cursor:pointer}
+.bi.click:hover .bn{color:var(--accent);text-decoration:underline}
+.bn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bt{height:12px;background:var(--soft);border-radius:3px;overflow:hidden}
+.bt i{display:block;height:100%;background:var(--c,var(--accent));border-radius:3px}
+.bv{text-align:right;font-weight:600}
+.stack{display:flex;height:18px;border-radius:4px;overflow:hidden;background:var(--soft)}
+.stack i{display:block;height:100%}
+.srow{display:grid;grid-template-columns:130px 1fr;gap:12px;align-items:center;margin:8px 0;font-size:13px}
+.srow.sel .sn{font-weight:700}
+.lg{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:8px}
+.lg span{display:inline-flex;align-items:center;gap:6px}
+.lg i{width:12px;height:8px;border-radius:2px;display:inline-block}
+
+.note{font-size:12.5px;color:var(--muted);background:var(--fill);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.det{border-left:4px solid var(--c,var(--accent))}
+.det .x{float:right;appearance:none;border:1px solid var(--line);background:var(--paper);border-radius:6px;padding:3px 10px;cursor:pointer;font-size:12px}
+.mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:12px 0}
+.mini div{background:var(--fill);border-radius:6px;padding:8px 10px}
+.mini .l{font-size:11.5px;color:var(--muted)}
+.mini .v{font-size:18px;font-weight:700}
+.svgwrap{width:100%;overflow:hidden}
+svg text{fill:var(--muted);font-size:11px;font-family:inherit}
+svg .ax{stroke:var(--line);stroke-width:1}
+svg circle{cursor:pointer;stroke:var(--paper);stroke-width:1}
+#tip{position:fixed;z-index:20;pointer-events:none;background:var(--ink);color:var(--paper);font-size:12px;padding:6px 9px;border-radius:6px;max-width:260px;display:none;line-height:1.35}
+.foot{margin-top:22px;font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Google Business Profile: all brands</h1>
+  <p class="sub" id="sub"></p>
+
+  <div class="bar">
+    <div class="row">
+      <div class="seg" id="brandSeg" role="group" aria-label="Brand"></div>
+      <label class="ctl">Region <select id="region"></select></label>
+      <label class="ctl"><input type="checkbox" id="hide" checked> Hide closed, coming soon, offices and no-data listings</label>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist" id="tabs">
+    <button role="tab" data-t="overview" aria-selected="true">Overview</button>
+    <button role="tab" data-t="locations" aria-selected="false">Locations</button>
+    <button role="tab" data-t="reviews" aria-selected="false">Reviews</button>
+    <button role="tab" data-t="notes" aria-selected="false">Data notes</button>
+  </div>
+
+  <main id="view"></main>
+  <p class="foot"><span id="foot"></span></p>
+</div>
+<div id="tip" role="tooltip"></div>
+
+<script>
+const RAW = /*__DATA__*/[];
+const PERIOD = /*__PERIOD__*/'September 2026';   // label shown in the subtitle and notes
+const READ_ON = /*__READ_ON__*/'9 Oct 2026';       // date the sheet was read, shown in the footer
+
+const BR = {
+  C:{name:'Cable Melbourne', s:'Cable', col:'var(--cb)', strip:/^cable\s*/i},
+  B:{name:'Baby Bunting',    s:'Baby Bunting', col:'var(--bb)', strip:/^baby bunting\s*/i},
+  V:{name:'Converse',        s:'Converse', col:'var(--cv)', strip:/^converse\s*-?\s*/i},
+  G:{name:'GAZMAN',          s:'GAZMAN', col:'var(--gz)', strip:/^gazman\s*/i}
+};
+const ORDER = ['C','B','V','G'];
+const $ = s => document.querySelector(s);
+const nf = new Intl.NumberFormat('en-AU');
+const n0 = v => v == null ? '-' : nf.format(Math.round(v));
+const pc1 = v => v == null ? '-' : (v * 100).toFixed(1) + '%';
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function stateOf(cc, pc){
+  if (cc === 'NZ') return 'NZ';
+  const n = parseInt(pc, 10); if (isNaN(n)) return 'Unknown';
+  if ((n>=2600&&n<=2618)||(n>=2900&&n<=2920)) return 'ACT';
+  if ((n>=2000&&n<=2599)||(n>=2619&&n<=2899)||(n>=2921&&n<=2999)||(n>=1000&&n<=1999)) return 'NSW';
+  if ((n>=3000&&n<=3999)||(n>=8000&&n<=8999)) return 'VIC';
+  if ((n>=4000&&n<=4999)||(n>=9000&&n<=9999)) return 'QLD';
+  if (n>=5000&&n<=5999) return 'SA';
+  if (n>=6000&&n<=6999) return 'WA';
+  if (n>=7000&&n<=7999) return 'TAS';
+  if (n>=800&&n<=999) return 'NT';
+  return 'Unknown';
+}
+function flagOf(name, nodata){
+  if (nodata) return 'No data';
+  if (/coming soon/i.test(name)) return 'Coming soon';
+  if (/\(closed/i.test(name)) return 'Closed';
+  if (/relocated/i.test(name)) return 'Relocated';
+  if (/corporate office|head office/i.test(name)) return 'Office';
+  return '';
+}
+
+const L = RAW.map((r, i) => {
+  const [b, name, cc, pc, tv, md, mm, sd, sm, act, web, call, dir, msi, nrev, navg, resp, trev, ovr] = r;
+  const nodata = tv === null;
+  return {
+    id:i, b, name, cc, pc, state: stateOf(cc, pc), nodata, flag: flagOf(name, nodata),
+    tv: tv||0, md: md||0, mm: mm||0, sd: sd||0, sm: sm||0, maps:(md||0)+(mm||0), search:(sd||0)+(sm||0),
+    act: act||0, web: web||0, call: call||0, dir: dir||0, msi, nrev, navg, resp, trev, ovr
+  };
+});
+// short display names, with the postcode added when a name repeats inside a brand
+L.forEach(l => { l.short = (l.name.replace(BR[l.b].strip, '').replace(/^\(|\)$/g,'') || l.name).trim() || l.name; });
+const dupes = {};
+L.forEach(l => { const k = l.b + '|' + l.short; dupes[k] = (dupes[k]||0) + 1; });
+L.forEach(l => { if (dupes[l.b + '|' + l.short] > 1) l.short += ' · ' + (l.pc || 'n/a'); });
+L.forEach(l => { l.ir = l.tv > 0 ? l.act / l.tv : null; });
+
+const S = { brand:'ALL', region:'ALL', hide:true, tab:'overview', sort:{k:'tv', d:-1}, q:'', sel:null };
+
+function visible(opts){
+  opts = opts || {};
+  return L.filter(l =>
+    (opts.anyBrand || S.brand === 'ALL' || l.b === S.brand) &&
+    (S.region === 'ALL' || l.state === S.region) &&
+    !(S.hide && l.flag));
+}
+function agg(list){
+  const a = {n:list.length, tv:0, maps:0, search:0, md:0, mm:0, sd:0, sm:0, act:0, web:0, call:0, dir:0, nrev:0, trev:0, rsum:0, rcnt:0, nsum:0, ncnt:0};
+  list.forEach(l => {
+    a.tv += l.tv; a.maps += l.maps; a.search += l.search; a.md += l.md; a.mm += l.mm; a.sd += l.sd; a.sm += l.sm;
+    a.act += l.act; a.web += l.web; a.call += l.call; a.dir += l.dir;
+    if (l.nrev) { a.nrev += l.nrev; if (l.navg != null) { a.nsum += l.navg * l.nrev; a.ncnt += l.nrev; } }
+    if (l.trev) { a.trev += l.trev; if (l.ovr != null) { a.rsum += l.ovr * l.trev; a.rcnt += l.trev; } }
+  });
+  a.ir = a.tv ? a.act / a.tv : null;
+  a.rating = a.rcnt ? a.rsum / a.rcnt : null;
+  a.navg = a.ncnt ? a.nsum / a.ncnt : null;
+  return a;
+}
+const median = arr => { const s = arr.slice().sort((x,y)=>x-y); if (!s.length) return null; const m = s.length>>1; return s.length%2 ? s[m] : (s[m-1]+s[m])/2; };
+const dur = mins => mins == null ? '-' : mins < 90 ? Math.round(mins) + ' min' : mins < 2880 ? (mins/60).toFixed(1) + ' hours' : (mins/1440).toFixed(1) + ' days';
+
+function kpi(l, v, s){ return `<div class="card kpi"><div class="l">${l}</div><div class="v">${v}</div><div class="s">${s||''}</div></div>`; }
+function barList(items, o){
+  o = o || {};
+  const max = Math.max(...items.map(i => i.v)) || 1;
+  return `<div class="bl">${items.map(i => `<div class="bi${i.id!=null?' click':''}" ${i.id!=null?`data-sel="${i.id}"`:''} style="--c:${i.c||'var(--accent)'}"><span class="bn" title="${esc(i.n)}">${esc(i.n)}</span><span class="bt"><i style="width:${(i.v/max*100).toFixed(1)}%"></i></span><span class="bv">${i.t != null ? i.t : n0(i.v)}</span></div>`).join('')}</div>`;
+}
+
+function overview(){
+  const list = visible(), a = agg(list);
+  const hiddenN = L.filter(l => l.flag && (S.brand === 'ALL' || l.b === S.brand) && (S.region === 'ALL' || l.state === S.region)).length;
+  const allB = visible({anyBrand:true});
+  const rows = ORDER.map(b => ({b, a: agg(allB.filter(l => l.b === b))})).filter(r => r.a.n);
+  const totalTv = rows.reduce((s, r) => s + r.a.tv, 0) || 1;
+
+  const kp = `<div class="grid g4">
+    ${kpi('Locations', n0(a.n), S.hide ? `${hiddenN} listings hidden` : 'All listings shown')}
+    ${kpi('Total views', n0(a.tv), `Maps ${pc1(a.tv?a.maps/a.tv:null)} · Search ${pc1(a.tv?a.search/a.tv:null)}`)}
+    ${kpi('Actions', n0(a.act), `Directions ${pc1(a.act?a.dir/a.act:null)} of actions`)}
+    ${kpi('Interaction rate', pc1(a.ir), 'Actions ÷ views')}
+    ${kpi('Website visits', n0(a.web), pc1(a.act?a.web/a.act:null) + ' of actions')}
+    ${kpi('Phone calls', n0(a.call), pc1(a.act?a.call/a.act:null) + ' of actions')}
+    ${kpi('Directions requests', n0(a.dir), pc1(a.act?a.dir/a.act:null) + ' of actions')}
+    ${kpi('Rating (all-time)', a.rating ? a.rating.toFixed(2) : '-', `${n0(a.trev)} reviews · ${n0(a.nrev)} new this month`)}
+  </div>`;
+
+  const brandTbl = `<div class="card"><div class="hd"><div><h2>Brands side by side</h2><p>Click a row to filter the whole dashboard to that brand.</p></div></div>
+    <div class="scroll"><table><thead><tr><th>Brand</th><th>Locations</th><th>Views</th><th>Actions</th><th>Interaction rate</th><th>Website</th><th>Calls</th><th>Directions</th><th>Rating</th><th>New reviews</th></tr></thead><tbody>
+    ${rows.map(r => `<tr class="click ${S.brand===r.b?'on':''}" data-brand="${r.b}"><td><span class="pill"><i class="dot" style="--c:${BR[r.b].col}"></i>${BR[r.b].name}</span></td><td>${n0(r.a.n)}</td>
+      <td><span class="cell-bar" style="--c:${BR[r.b].col}"><i style="width:${(r.a.tv/Math.max(...rows.map(x=>x.a.tv))*100).toFixed(0)}%"></i><span>${n0(r.a.tv)}</span></span></td>
+      <td>${n0(r.a.act)}</td><td><span class="heat" style="--h:${Math.min(70, (r.a.ir||0)*1000)}%">${pc1(r.a.ir)}</span></td>
+      <td>${n0(r.a.web)}</td><td>${n0(r.a.call)}</td><td>${n0(r.a.dir)}</td><td>${r.a.rating?r.a.rating.toFixed(2):'-'}</td><td>${n0(r.a.nrev)}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+
+  const surf = (cols) => `<div class="card"><div class="hd"><div><h2>Where views come from</h2><p>Share of each brand's views by surface and device.</p></div></div>
+    <div class="lg"><span><i style="background:var(--cb)"></i>Maps, mobile</span><span><i style="background:color-mix(in srgb,var(--cb) 45%,transparent)"></i>Maps, desktop</span><span><i style="background:var(--cv)"></i>Search, mobile</span><span><i style="background:color-mix(in srgb,var(--cv) 45%,transparent)"></i>Search, desktop</span></div>
+    ${rows.map(r => { const t = r.a.tv || 1; const seg = [[r.a.mm,'var(--cb)','Maps, mobile'],[r.a.md,'color-mix(in srgb,var(--cb) 45%,transparent)','Maps, desktop'],[r.a.sm,'var(--cv)','Search, mobile'],[r.a.sd,'color-mix(in srgb,var(--cv) 45%,transparent)','Search, desktop']];
+      return `<div class="srow ${S.brand===r.b?'sel':''}"><span class="sn">${BR[r.b].name}</span><div class="stack">${seg.map(s => `<i style="width:${(s[0]/t*100).toFixed(2)}%;background:${s[1]}" title="${s[2]}: ${pc1(s[0]/t)}"></i>`).join('')}</div></div>`; }).join('')}</div>`;
+
+  const mix = `<div class="card"><div class="hd"><div><h2>What people do</h2><p>Share of each brand's actions.</p></div></div>
+    <div class="lg"><span><i style="background:var(--good)"></i>Directions</span><span><i style="background:var(--accent)"></i>Phone calls</span><span><i style="background:var(--cv)"></i>Website visits</span></div>
+    ${rows.map(r => { const t = r.a.act || 1; const seg = [[r.a.dir,'var(--good)','Directions'],[r.a.call,'var(--accent)','Phone calls'],[r.a.web,'var(--cv)','Website visits']];
+      return `<div class="srow ${S.brand===r.b?'sel':''}"><span class="sn">${BR[r.b].name}</span><div class="stack">${seg.map(s => `<i style="width:${(s[0]/t*100).toFixed(2)}%;background:${s[1]}" title="${s[2]}: ${pc1(s[0]/t)}"></i>`).join('')}</div></div>`; }).join('')}</div>`;
+
+  const byState = {};
+  list.forEach(l => { (byState[l.state] = byState[l.state] || []).push(l); });
+  const stRows = Object.keys(byState).map(k => ({k, a: agg(byState[k])})).sort((x, y) => y.a.tv - x.a.tv);
+  const states = `<div class="card"><div class="hd"><div><h2>By state</h2><p>Views, with the interaction rate in brackets. State comes from the postcode.</p></div></div>
+    ${barList(stRows.map(r => ({n: r.k + ' · ' + r.a.n + ' loc.', v: r.a.tv, t: n0(r.a.tv) + ' (' + pc1(r.a.ir) + ')'})))}</div>`;
+
+  const top = list.slice().sort((x, y) => y.tv - x.tv).slice(0, 10);
+  const topC = `<div class="card"><div class="hd"><div><h2>Top 10 locations by views</h2><p>Click a bar to open the location.</p></div></div>
+    ${barList(top.map(l => ({n: (S.brand==='ALL' ? BR[l.b].s + ' · ' : '') + l.short, v: l.tv, c: BR[l.b].col, id: l.id})))}</div>`;
+
+  const gap = list.filter(l => l.tv >= 3000).sort((x, y) => x.ir - y.ir).slice(0, 10);
+  const gapC = `<div class="card"><div class="hd"><div><h2>Seen a lot, acted on little</h2><p>Lowest interaction rate among locations with 3,000+ views.</p></div></div>
+    ${barList(gap.map(l => ({n: (S.brand==='ALL' ? BR[l.b].s + ' · ' : '') + l.short, v: l.ir, t: pc1(l.ir) + ' · ' + n0(l.tv), c: BR[l.b].col, id: l.id})))}</div>`;
+
+  return kp + `<div class="grid" style="margin-top:14px">${brandTbl}<div class="grid g2">${surf()}${mix}</div><div class="grid g2">${states}<div class="grid" style="align-content:start">${topC}</div></div>${gapC}</div>`;
+}
+
+const COLS = [
+  {k:'short', l:'Location', f:l=>esc(l.short) + (l.flag?`<span class="tag">${l.flag}</span>`:''), cls:'name', str:true},
+  {k:'b', l:'Brand', f:l=>`<span class="pill"><i class="dot" style="--c:${BR[l.b].col}"></i>${BR[l.b].s}</span>`, str:true},
+  {k:'state', l:'State', f:l=>l.state, str:true},
+  {k:'tv', l:'Views', f:l=>n0(l.tv)},
+  {k:'mapshare', l:'Maps share', f:l=>pc1(l.tv?l.maps/l.tv:null), v:l=>l.tv?l.maps/l.tv:-1},
+  {k:'act', l:'Actions', f:l=>n0(l.act)},
+  {k:'ir', l:'Interaction rate', f:l=>l.ir==null?'-':`<span class="heat" style="--h:${Math.min(70,(l.ir||0)*1000)}%">${pc1(l.ir)}</span>`, v:l=>l.ir==null?-1:l.ir},
+  {k:'web', l:'Website', f:l=>n0(l.web)},
+  {k:'call', l:'Calls', f:l=>n0(l.call)},
+  {k:'dir', l:'Directions', f:l=>n0(l.dir)},
+  {k:'msi', l:'Search impr. (month)', f:l=>n0(l.msi), v:l=>l.msi==null?-1:l.msi},
+  {k:'ovr', l:'Rating', f:l=>l.ovr==null?'-':l.ovr.toFixed(1), v:l=>l.ovr==null?-1:l.ovr},
+  {k:'trev', l:'Reviews', f:l=>n0(l.trev), v:l=>l.trev==null?-1:l.trev},
+  {k:'nrev', l:'New reviews', f:l=>n0(l.nrev), v:l=>l.nrev==null?-1:l.nrev}
+];
+
+function detail(l){
+  const peers = L.filter(x => x.b === l.b && !x.flag);
+  const rv = peers.slice().sort((x, y) => y.tv - x.tv).findIndex(x => x.id === l.id) + 1;
+  const big = peers.filter(x => x.tv >= 1000).sort((x, y) => y.ir - x.ir);
+  const ri = big.findIndex(x => x.id === l.id) + 1;
+  const t = l.tv || 1;
+  const seg = [[l.mm,'var(--cb)','Maps, mobile'],[l.md,'color-mix(in srgb,var(--cb) 45%,transparent)','Maps, desktop'],[l.sm,'var(--cv)','Search, mobile'],[l.sd,'color-mix(in srgb,var(--cv) 45%,transparent)','Search, desktop']];
+  return `<div class="card det" style="--c:${BR[l.b].col}">
+    <button class="x" data-close="1">Close</button>
+    <h2>${esc(l.name)} ${l.flag?`<span class="tag">${l.flag}</span>`:''}</h2>
+    <p class="muted" style="margin:2px 0 0;font-size:12.5px">${BR[l.b].name} · ${l.state}${l.pc?' · postcode '+esc(l.pc):''}</p>
+    ${l.nodata ? '<p class="note" style="margin-top:12px">This listing returned no performance data for the month.</p>' : `
+    <div class="mini">
+      <div><div class="l">Views</div><div class="v">${n0(l.tv)}</div></div>
+      <div><div class="l">Actions</div><div class="v">${n0(l.act)}</div></div>
+      <div><div class="l">Interaction rate</div><div class="v">${pc1(l.ir)}</div></div>
+      <div><div class="l">Search impressions (month)</div><div class="v">${n0(l.msi)}</div></div>
+      <div><div class="l">Rating (all-time)</div><div class="v">${l.ovr==null?'-':l.ovr.toFixed(1)}</div></div>
+      <div><div class="l">Reviews</div><div class="v">${n0(l.trev)}</div></div>
+    </div>
+    <div class="grid g2">
+      <div><h3 style="margin-bottom:6px">Views by surface</h3><div class="stack">${seg.map(s=>`<i style="width:${(s[0]/t*100).toFixed(2)}%;background:${s[1]}" title="${s[2]}: ${n0(s[0])}"></i>`).join('')}</div>
+        <div class="lg" style="margin-top:8px"><span><i style="background:var(--cb)"></i>Maps mobile ${n0(l.mm)}</span><span><i style="background:color-mix(in srgb,var(--cb) 45%,transparent)"></i>Maps desktop ${n0(l.md)}</span><span><i style="background:var(--cv)"></i>Search mobile ${n0(l.sm)}</span><span><i style="background:color-mix(in srgb,var(--cv) 45%,transparent)"></i>Search desktop ${n0(l.sd)}</span></div></div>
+      <div><h3 style="margin-bottom:6px">Actions</h3>${barList([{n:'Directions',v:l.dir,c:'var(--good)'},{n:'Phone calls',v:l.call,c:'var(--accent)'},{n:'Website visits',v:l.web,c:'var(--cv)'}])}</div>
+    </div>
+    <p class="muted" style="font-size:12.5px;margin:12px 0 0">${l.flag?'Flagged listings are left out of the ranks below. ':`Ranks ${rv} of ${peers.length} ${BR[l.b].name} locations by views${ri?`, and ${ri} of ${big.length} by interaction rate (locations with 1,000+ views)`:''}. `}${l.nrev?`${l.nrev} new review${l.nrev>1?'s':''} this month${l.navg!=null?` averaging ${l.navg}`:''}${l.resp!=null?`, average reply time ${dur(l.resp)}`:''}.`:'No new reviews this month.'}</p>`}
+  </div>`;
+}
+
+function scatter(list){
+  const pts = list.filter(l => l.tv >= 500 && l.ir != null);
+  if (!pts.length) return '';
+  const W = 760, H = 330, m = {l:46, r:16, t:12, b:38};
+  const xmin = Math.log10(500), xmax = Math.log10(Math.max(...pts.map(p => p.tv)) * 1.1);
+  const ymax = Math.min(0.2, Math.ceil(Math.max(...pts.map(p => p.ir)) * 100 / 2) * 2 / 100) || 0.1;
+  const X = v => m.l + (Math.log10(v) - xmin) / (xmax - xmin) * (W - m.l - m.r);
+  const Y = v => H - m.b - Math.min(v, ymax) / ymax * (H - m.t - m.b);
+  const xt = [500, 1000, 3000, 10000, 30000, 100000].filter(v => Math.log10(v) <= xmax);
+  const yt = Array.from({length:5}, (_, i) => ymax * i / 4);
+  return `<div class="card"><div class="hd"><div><h2>Views against interaction rate</h2><p>Each dot is a location with 500+ views. The views axis is on a log scale, and dots above 20% are drawn at the top. Click a dot to open it.</p></div></div>
+    <div class="lg">${ORDER.map(b => `<span><i style="background:${BR[b].col}"></i>${BR[b].name}</span>`).join('')}</div>
+    <div class="svgwrap"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Scatter of views against interaction rate">
+      ${yt.map(v => `<line class="ax" x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${m.l-6}" y="${Y(v)+4}" text-anchor="end">${(v*100).toFixed(0)}%</text>`).join('')}
+      ${xt.map(v => `<line class="ax" x1="${X(v)}" x2="${X(v)}" y1="${m.t}" y2="${H-m.b}" style="stroke-dasharray:3 3"/><text x="${X(v)}" y="${H-m.b+16}" text-anchor="middle">${v>=1000?(v/1000)+'k':v}</text>`).join('')}
+      <text x="${(m.l+W-m.r)/2}" y="${H-4}" text-anchor="middle">Views in the month</text>
+      ${pts.map(p => `<circle cx="${X(p.tv).toFixed(1)}" cy="${Y(p.ir).toFixed(1)}" r="${S.brand==='C'?6:4.5}" fill="${BR[p.b].col.replace('var(','var(')}" fill-opacity=".78" data-sel="${p.id}" data-tip="${esc(BR[p.b].name + ' · ' + p.short)}&lt;br&gt;${n0(p.tv)} views · ${pc1(p.ir)} interaction rate"/>`).join('')}
+    </svg></div></div>`;
+}
+
+function locations(){
+  const list = visible().filter(l => !S.q || (l.name + ' ' + l.state).toLowerCase().includes(S.q.toLowerCase()));
+  const c = COLS.find(x => x.k === S.sort.k) || COLS[3];
+  const val = c.v || (c.str ? (l => String(l[c.k]).toLowerCase()) : (l => l[c.k] == null ? -1 : l[c.k]));
+  const sorted = list.slice().sort((x, y) => { const a = val(x), b = val(y); return (a < b ? -1 : a > b ? 1 : 0) * S.sort.d; });
+  const sel = S.sel != null ? L[S.sel] : null;
+  return (sel ? detail(sel) : '') + `<div style="margin-top:${sel?14:0}px" class="grid">
+    ${scatter(visible())}
+    <div class="card"><div class="hd"><div><h2>${n0(sorted.length)} locations</h2><p>Click a column to sort, click a row for the detail.</p></div><input type="search" id="q" placeholder="Search location or state" value="${esc(S.q)}" aria-label="Search locations"></div>
+    <div class="scroll" style="max-height:640px;overflow:auto"><table><thead><tr>${COLS.map(x => `<th class="s" data-sort="${x.k}">${x.l}${S.sort.k===x.k?(S.sort.d<0?' ↓':' ↑'):''}</th>`).join('')}</tr></thead><tbody>
+    ${sorted.map(l => `<tr class="click ${S.sel===l.id?'on':''}" data-sel="${l.id}">${COLS.map(x => `<td class="${x.cls||''}">${x.f(l)}</td>`).join('')}</tr>`).join('')}
+    </tbody></table></div></div></div>`;
+}
+
+function reviews(){
+  const list = visible(), a = agg(list);
+  const rated = list.filter(l => l.ovr != null && l.trev > 0);
+  const lowShare = rated.length ? rated.filter(l => l.ovr < 4).length / rated.length : null;
+  const med = median(list.filter(l => l.resp != null).map(l => l.resp));
+  const allB = visible({anyBrand:true});
+  const rows = ORDER.map(b => ({b, a: agg(allB.filter(l => l.b === b)), list: allB.filter(l => l.b === b)})).filter(r => r.a.n);
+  const buckets = [['Under 3.0', l => l.ovr < 3], ['3.0 to 3.4', l => l.ovr >= 3 && l.ovr < 3.5], ['3.5 to 3.9', l => l.ovr >= 3.5 && l.ovr < 4], ['4.0 to 4.4', l => l.ovr >= 4 && l.ovr < 4.5], ['4.5 and above', l => l.ovr >= 4.5]];
+  const dist = buckets.map(([n, f]) => ({n, v: rated.filter(f).length}));
+  const low = rated.filter(l => l.trev >= 50 && l.ovr < 3.9).sort((x, y) => x.ovr - y.ovr || y.trev - x.trev).slice(0, 12);
+  const none = list.filter(l => !l.nrev).length;
+  return `<div class="grid g4">
+    ${kpi('Rating (all-time)', a.rating ? a.rating.toFixed(2) : '-', `Weighted by review count · ${n0(a.trev)} reviews`)}
+    ${kpi('New reviews this month', n0(a.nrev), a.navg != null ? `Averaging ${a.navg.toFixed(2)} stars` : '')}
+    ${kpi('Locations under 4.0', pc1(lowShare), `${n0(rated.filter(l=>l.ovr<4).length)} of ${n0(rated.length)} rated locations`)}
+    ${kpi('Typical reply time', dur(med), `Median across ${n0(list.filter(l=>l.resp!=null).length)} locations with a reply`)}
+  </div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card"><div class="hd"><div><h2>Ratings by brand</h2><p>All-time rating weighted by review count.</p></div></div>
+      <div class="scroll"><table><thead><tr><th>Brand</th><th>Rating</th><th>Reviews</th><th>New this month</th><th>New avg</th><th>No new reviews</th></tr></thead><tbody>
+      ${rows.map(r => `<tr class="click ${S.brand===r.b?'on':''}" data-brand="${r.b}"><td><span class="pill"><i class="dot" style="--c:${BR[r.b].col}"></i>${BR[r.b].name}</span></td><td>${r.a.rating?r.a.rating.toFixed(2):'-'}</td><td>${n0(r.a.trev)}</td><td>${n0(r.a.nrev)}</td><td>${r.a.navg!=null?r.a.navg.toFixed(2):'-'}</td><td>${n0(r.list.filter(l=>!l.nrev).length)} of ${n0(r.list.length)}</td></tr>`).join('')}
+      </tbody></table></div></div>
+    <div class="card"><div class="hd"><div><h2>Locations by rating band</h2><p>${n0(none)} of ${n0(list.length)} locations had no new review this month.</p></div></div>${barList(dist)}</div>
+  </div>
+  <div class="card" style="margin-top:14px"><div class="hd"><div><h2>Lowest-rated locations with 50+ reviews</h2><p>Rated under 3.9. Click a row to open the location.</p></div></div>
+    <div class="scroll"><table><thead><tr><th>Location</th><th>Brand</th><th>State</th><th>Rating</th><th>Reviews</th><th>New this month</th><th>Views</th></tr></thead><tbody>
+    ${low.length ? low.map(l => `<tr class="click" data-sel="${l.id}"><td class="name">${esc(l.short)}</td><td><span class="pill"><i class="dot" style="--c:${BR[l.b].col}"></i>${BR[l.b].s}</span></td><td>${l.state}</td><td>${l.ovr.toFixed(1)}</td><td>${n0(l.trev)}</td><td>${n0(l.nrev)}</td><td>${n0(l.tv)}</td></tr>`).join('') : '<tr><td colspan="7" class="muted">No locations match.</td></tr>'}
+    </tbody></table></div></div>`;
+}
+
+function notes(){
+  const counts = {}; L.filter(l => l.flag).forEach(l => { counts[l.flag] = (counts[l.flag]||0) + 1; });
+  return `<div class="grid g2">
+    <div class="card"><h2>What this is</h2>
+      <p class="muted" style="font-size:13px">A snapshot of the Supermetrics Google My Business export for four brands: Baby Bunting, Cable Melbourne, Converse and GAZMAN, ${L.length} listings in total. The Supermetrics query was set to <b>Last month</b>, so the performance numbers cover ${PERIOD}. Each row is one location for that whole month. There is no daily split and no previous period in the export, so this page has no trend lines or period comparisons.</p></div>
+    <div class="card"><h2>Listings hidden by default</h2>
+      <p class="muted" style="font-size:13px">${Object.keys(counts).map(k => `${counts[k]} ${k.toLowerCase()}`).join(', ')}. Untick the box at the top to include them. With them included, totals match the sheet.</p>
+      <p class="muted" style="font-size:13px">The two Cable David Jones listings (Bourke Street Mall and Chatswood Chase) returned no performance data.</p></div>
+    <div class="card"><h2>How the numbers are built</h2>
+      <p class="muted" style="font-size:13px"><b>Views</b> are Maps plus Search views. <b>Actions</b> are website visits, phone calls and direction requests added together. Messages, bookings, menu clicks and food orders are zero in the export for every location. <b>Interaction rate</b> is actions divided by views. <b>Search impressions (month)</b> is Google's monthly search impressions for the listing. <b>Rating</b> is the all-time overall star rating, and brand ratings are weighted by review count. New reviews and their average cover ${PERIOD} only. Reply time is the average per location in the sheet, and the page shows the median of those.</p></div>
+    <div class="card"><h2>Reading it carefully</h2>
+      <p class="muted" style="font-size:13px">Locations with very few views show very high interaction rates, because actions can come from people who saw the listing earlier. Rankings that use the rate only include locations with 1,000 or more views, and the scatter starts at 500. State is worked out from the postcode, and New Zealand is shown as NZ. A few reply times are extreme, which is why the median is used.</p></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h2>To rebuild this in Looker Studio</h2>
+    <p class="muted" style="font-size:13px">Use one data source from the Supermetrics Google My Business connector with no date dimension, and a date range of Last month. Add a Brand calculated field from the account name. The scorecards map to Total views, Total actions, Website visits, Phone calls, Directions requests and Total review count. The brand table is a table with Brand as the dimension. The scatter is a bubble or scatter chart with Total views on x and a calculated Actions ÷ Total views on y.</p></div>`;
+}
+
+function render(){
+  const list = visible(), br = S.brand === 'ALL' ? 'All brands' : BR[S.brand].name;
+  $('#sub').textContent = `${br} · ${PERIOD} · ${n0(list.length)} locations${S.region!=='ALL'?' in '+S.region:''}`;
+  $('#foot').textContent = `Snapshot of the "Master - GMB - All Data" sheet (Supermetrics, Google My Business connector), read on ${READ_ON}. The page does not refresh itself; republish after the sheet is refreshed.`;
+  $('#brandSeg').innerHTML = [['ALL','All brands','var(--ink)'], ...ORDER.map(b => [b, BR[b].name, BR[b].col])].map(([k, n, c]) => `<button data-brand="${k}" aria-pressed="${S.brand===k}"><i class="dot" style="--c:${c}"></i>${n}</button>`).join('');
+  document.querySelectorAll('#tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.t === S.tab)));
+  $('#view').innerHTML = ({overview, locations, reviews, notes})[S.tab]();
+}
+(function init(){
+  const states = ['ALL', ...Array.from(new Set(L.map(l => l.state))).filter(s => s !== 'Unknown').sort()];
+  $('#region').innerHTML = states.map(s => `<option value="${s}">${s === 'ALL' ? 'All regions' : s}</option>`).join('');
+  render();
+})();
+
+document.addEventListener('click', e => {
+  const t = e.target;
+  const tab = t.closest('#tabs button');
+  if (tab) { S.tab = tab.dataset.t; render(); return; }
+  const br = t.closest('[data-brand]');
+  if (br) { S.brand = (S.brand === br.dataset.brand && br.tagName !== 'BUTTON') ? 'ALL' : br.dataset.brand; S.sel = null; render(); return; }
+  if (t.closest('[data-close]')) { S.sel = null; render(); return; }
+  const sel = t.closest('[data-sel]');
+  if (sel) { S.sel = +sel.dataset.sel; S.tab = 'locations'; render(); window.scrollTo({top:0}); return; }
+  const so = t.closest('[data-sort]');
+  if (so) { const k = so.dataset.sort; S.sort = S.sort.k === k ? {k, d: -S.sort.d} : {k, d: (k === 'short' || k === 'b' || k === 'state') ? 1 : -1}; render(); return; }
+});
+$('#region').addEventListener('change', e => { S.region = e.target.value; S.sel = null; render(); });
+$('#hide').addEventListener('change', e => { S.hide = e.target.checked; render(); });
+document.addEventListener('input', e => {
+  if (e.target.id === 'q') { S.q = e.target.value; const pos = e.target.selectionStart; render(); const q = $('#q'); q.focus(); q.setSelectionRange(pos, pos); }
+});
+const tip = $('#tip');
+document.addEventListener('mouseover', e => { const c = e.target.closest('[data-tip]'); if (c) { tip.innerHTML = c.dataset.tip; tip.style.display = 'block'; } });
+document.addEventListener('mousemove', e => { if (tip.style.display === 'block') { tip.style.left = Math.min(e.clientX + 14, window.innerWidth - 270) + 'px'; tip.style.top = (e.clientY + 14) + 'px'; } });
+document.addEventListener('mouseout', e => { if (e.target.closest('[data-tip]')) tip.style.display = 'none'; });
+</script>
+</body>
+</html>
